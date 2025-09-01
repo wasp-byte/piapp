@@ -2,14 +2,19 @@ package com.waspbyte.piapp
 
 import PiManager
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.BackgroundColorSpan
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 
 
 class GameActivity : AppCompatActivity() {
@@ -26,12 +31,12 @@ class GameActivity : AppCompatActivity() {
 
         digitsEt.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
-                val back = piManager.back() ?: return@setOnKeyListener false
-                if (back == '.') {
+                if (piManager.isDot()) {
                     pastDigitsTv.text = pastDigitsTv.text.toString().substring(0, pastDigitsTv.text.length - 1)
-                    piManager.back()
                 }
+                piManager.back()
                 pastDigitsTv.text = pastDigitsTv.text.toString().substring(0, pastDigitsTv.text.length - 1)
+                formatText(piManager.getColors(), pastDigitsTv)
             }
             false
         }
@@ -40,19 +45,36 @@ class GameActivity : AppCompatActivity() {
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.isEmpty()) return
+                if (!s.isDigitsOnly()) {
+                    digitsEt.text.clear()
+                    return
+                }
 
-                var correct = piManager.next()
-                if (correct == '.') {
-                    correct = piManager.next()
+                piManager.next()
+                piManager.check(s[0])
+
+                pastDigitsTv.text = pastDigitsTv.text.toString() + s
+                if (piManager.isDot()) {
                     pastDigitsTv.text = pastDigitsTv.text.toString() + '.'
                 }
-                if (correct != s[0]) println("INCORRECT!")
-                pastDigitsTv.text = pastDigitsTv.text.toString() + s
-
                 digitsEt.text.clear()
+
+                formatText(piManager.getColors(), pastDigitsTv)
+                println(piManager.getPoints())
             }
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {}
         })
+    }
+
+    fun formatText(colors: List<Int>, textView: TextView) {
+        val text = textView.text
+        textView.text = ""
+        println(colors)
+        for ((i, color) in colors.withIndex()) {
+            val word = SpannableString(text[i].toString())
+            word.setSpan(BackgroundColorSpan(color), 0, word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            textView.append(word)
+        }
     }
 }
