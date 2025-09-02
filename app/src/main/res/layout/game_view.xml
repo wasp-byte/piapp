@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/past_digits_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="start"
+        android:maxLines="1"
+        android:textAlignment="textEnd"
+        android:textSize="80sp" />
+
+    <EditText
+        android:id="@+id/digits_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="  "
+        android:inputType="number"
+        android:maxLength="1"
+        android:paddingTop="0dp"
+        android:textSize="80sp" />
+</merge>

@@ -2,7 +2,6 @@ package com.waspbyte.piapp
 
 import PiManager
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.Spannable
@@ -10,7 +9,6 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.BackgroundColorSpan
 import android.view.KeyEvent
-import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -25,8 +23,9 @@ class GameActivity : AppCompatActivity() {
 
         piManager = PiManager()
 
-        val digitsEt = findViewById<EditText>(R.id.digits_et)
-        val pastDigitsTv = findViewById<TextView>(R.id.past_digits_tv)
+        val gameView = findViewById<GameView>(R.id.game_view)
+        val digitsEt = gameView.findViewById<EditText>(R.id.digits_et)
+        val pastDigitsTv = gameView.findViewById<TextView>(R.id.past_digits_tv)
         digitsEt.requestFocus()
 
         digitsEt.setOnKeyListener { v, keyCode, event ->
