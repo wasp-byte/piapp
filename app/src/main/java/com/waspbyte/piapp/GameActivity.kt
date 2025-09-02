@@ -35,8 +35,10 @@ class GameActivity : AppCompatActivity() {
                     pastDigitsTv.text = pastDigitsTv.text.toString().substring(0, pastDigitsTv.text.length - 1)
                 }
                 piManager.back()
-                pastDigitsTv.text = pastDigitsTv.text.toString().substring(0, pastDigitsTv.text.length - 1)
-                formatText(piManager.getColors(), pastDigitsTv)
+                if (!pastDigitsTv.text.isEmpty()) {
+                    pastDigitsTv.text = pastDigitsTv.text.toString().substring(0, pastDigitsTv.text.length - 1)
+                    formatText(piManager.getColors(), pastDigitsTv)
+                }
             }
             false
         }
@@ -69,8 +71,8 @@ class GameActivity : AppCompatActivity() {
 
     fun formatText(colors: List<Int>, textView: TextView) {
         val text = textView.text
+        if (text.isEmpty()) return
         textView.text = ""
-        println(colors)
         for ((i, color) in colors.withIndex()) {
             val word = SpannableString(text[i].toString())
             word.setSpan(BackgroundColorSpan(color), 0, word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

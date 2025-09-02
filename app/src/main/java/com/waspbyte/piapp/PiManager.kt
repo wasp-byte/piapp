@@ -1,5 +1,6 @@
 import android.graphics.Color
 import kotlin.math.max
+import kotlin.math.min
 
 class PiManager {
     companion object {
@@ -32,7 +33,8 @@ class PiManager {
     }
 
     fun back(): Char? {
-        if (currentIndex == 0) return null
+        if (currentIndex == -1) return null
+        if (currentIndex == DOT) currentIndex--
         isCorrect[currentIndex] = false
         currentIndex--
         return PI[currentIndex + 1]
@@ -51,13 +53,10 @@ class PiManager {
     fun getColors(): List<Int> {
         val colors = mutableListOf<Int>()
 
-        var dot = 0
-        for (i in 0..currentIndex + 1) {
-            if (i == DOT) {
+        for (i in 0..currentIndex) {
+            colors.add(if (isCorrect[i]) Color.GREEN else Color.RED)
+            if (i == DOT-1)
                 colors.add(Color.GREEN)
-                dot = 1
-            }
-            else colors.add(if (isCorrect[i - dot]) Color.GREEN else Color.RED)
         }
 
         return colors.toList()
