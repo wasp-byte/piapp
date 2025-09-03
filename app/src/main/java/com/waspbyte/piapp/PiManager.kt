@@ -1,24 +1,33 @@
 import android.graphics.Color
-import kotlin.math.max
-import kotlin.math.min
+import android.widget.TextView
 
 class PiManager {
     companion object {
-        private const val PI = "314159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612"
+        private const val PI =
+            "314159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612"
         private const val DOT = 1
     }
 
-    var currentIndex = -1
-    var wrongAttempts = mutableListOf<Int>()
-    public var isCorrect = mutableListOf<Boolean>()
+    private var currentIndex = -1
+    private var currentText = StringBuilder()
+    private var visibleIndex = 0
+    private var wrongAttempts = mutableListOf<Int>()
+    private var isCorrect = mutableListOf<Boolean>()
 
     fun isDot() = currentIndex == DOT - 1
 
-    fun next(): Char? {
+    fun next(c: Char, textView: TextView): Char? {
         currentIndex++
         if (wrongAttempts.size <= currentIndex) {
             wrongAttempts.add(0)
             isCorrect.add(false)
+        }
+
+        currentText.append(c)
+        val availableWidth = textView.width - textView.paddingLeft - textView.paddingRight
+        val paint = textView.paint
+        while (paint.measureText(getText()) > availableWidth && visibleIndex <= currentIndex) {
+            visibleIndex++
         }
 
         return PI[currentIndex]
@@ -32,33 +41,46 @@ class PiManager {
         isCorrect[currentIndex] = correct
     }
 
-    fun back(): Char? {
-        if (currentIndex == -1) return null
-        if (currentIndex == DOT) currentIndex--
+    fun back() {
+        println(currentIndex)
+        if (currentIndex == -1) return
         isCorrect[currentIndex] = false
+        currentText.deleteAt(currentText.length - 1)
         currentIndex--
-        return PI[currentIndex + 1]
+        if (visibleIndex > 0) visibleIndex--
     }
 
     fun getPoints(): Float {
         val initialPoints = currentIndex * 5
         var points = initialPoints
 
-        points -= isCorrect.map { if (it) 0 else -5}.sum()
+        points -= isCorrect.map { if (it) 0 else -5 }.sum()
         points -= wrongAttempts.sum()
 
         return points / initialPoints.toFloat()
     }
 
-    fun getColors(): List<Int> {
-        val colors = mutableListOf<Int>()
-
-        for (i in 0..currentIndex) {
-            colors.add(if (isCorrect[i]) Color.GREEN else Color.RED)
-            if (i == DOT-1)
-                colors.add(Color.GREEN)
+    fun getText(): String {
+        if (currentIndex < 0) return ""
+        val start = visibleIndex
+        val end = currentIndex
+        val sb = StringBuilder()
+        for (i in start..end) {
+            sb.append(currentText[i])
+            if (i == DOT - 1) sb.append('.')
         }
+        return sb.toString()
+    }
 
-        return colors.toList()
+    fun getColors(): List<Int> {
+        if (currentIndex < 0) return emptyList()
+        val colors = ArrayList<Int>()
+        val start = visibleIndex
+        val end = currentIndex
+        for (i in start..end) {
+            colors.add(if (isCorrect[i]) Color.BLACK else Color.RED)
+            if (i == DOT - 1) colors.add(Color.BLACK)
+        }
+        return colors
     }
 }
