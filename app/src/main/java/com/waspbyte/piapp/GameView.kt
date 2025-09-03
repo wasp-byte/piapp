@@ -25,23 +25,19 @@ class GameView @JvmOverloads constructor(
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         val width = right - left
-        val textViewWidth = textView.measuredWidth
+        val textViewWidth = textView.measuredWidth + paddingLeft
         val textViewHeight = textView.measuredHeight
         val editTextWidth = editText.measuredWidth
         val editTextHeight = editText.measuredHeight
+
         if (textViewWidth < (width - editTextWidth ) / 2) {
-                textView.layout((width - editTextWidth) / 2 - textViewWidth, 0, (width - editTextWidth) / 2, textViewHeight)
-                textView.measure(0, 0)
-                editText.layout((width - editTextWidth) / 2, 0, (width + editTextWidth) / 2, editTextHeight)
-            } else if (textViewWidth < width - editTextWidth) {
-                textView.layout(0, 0, textViewWidth, textViewHeight)
-                textView.measure(0, 0)
-                editText.layout(textViewWidth, 0, textViewWidth + editTextWidth, editTextHeight)
-            } else {
-                // TODO
-                textView.layout(0, 0, width - editTextWidth, textViewHeight)
-                textView.measure(0, 0)
-                editText.layout(width - editTextWidth, 0, width, editTextHeight)
+            textView.layout((width - editTextWidth) / 2 - textViewWidth, 0, (width - editTextWidth) / 2, textViewHeight)
+            textView.measure(0, 0)
+            editText.layout((width - editTextWidth) / 2, 0, (width + editTextWidth) / 2, editTextHeight)
+        } else {
+            textView.layout(paddingLeft, 0, textViewWidth, textViewHeight)
+            textView.measure(0, 0)
+            editText.layout(textViewWidth, 0, textViewWidth + editTextWidth, editTextHeight)
         }
     }
 }

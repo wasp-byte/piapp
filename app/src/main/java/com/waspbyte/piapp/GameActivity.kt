@@ -1,6 +1,7 @@
 package com.waspbyte.piapp
 
 import PiManager
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableString
@@ -23,8 +24,10 @@ class GameActivity : AppCompatActivity() {
 
         piManager = PiManager()
 
-        val digitsEt = findViewById<EditText>(R.id.digits_et)
-        val pastDigitsTv = findViewById<TextView>(R.id.past_digits_tv)
+        val gameView = findViewById<GameView>(R.id.game_view)
+
+        val digitsEt = gameView.findViewById<EditText>(R.id.digits_et)
+        val pastDigitsTv = gameView.findViewById<TextView>(R.id.past_digits_tv)
 
         digitsEt.requestFocus()
 
@@ -36,6 +39,8 @@ class GameActivity : AppCompatActivity() {
             false
         }
 
+        val width = Resources.getSystem().displayMetrics.widthPixels
+
         digitsEt.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.isEmpty()) return
@@ -44,7 +49,8 @@ class GameActivity : AppCompatActivity() {
                     return
                 }
 
-                piManager.next(s[0], pastDigitsTv)
+                val availableWidth = width - gameView.paddingLeft - gameView.paddingRight - digitsEt.width
+                piManager.next(s[0], pastDigitsTv, availableWidth)
                 piManager.check(s[0])
 
                 digitsEt.text.clear()
@@ -81,4 +87,3 @@ class GameActivity : AppCompatActivity() {
         textView.text = spannable
     }
 }
-

@@ -16,7 +16,7 @@ class PiManager {
 
     fun isDot() = currentIndex == DOT - 1
 
-    fun next(c: Char, textView: TextView): Char? {
+    fun next(c: Char, textView: TextView, maxTextWidth: Int): Char? {
         currentIndex++
         if (wrongAttempts.size <= currentIndex) {
             wrongAttempts.add(0)
@@ -24,9 +24,8 @@ class PiManager {
         }
 
         currentText.append(c)
-        val availableWidth = textView.width - textView.paddingLeft - textView.paddingRight
         val paint = textView.paint
-        while (paint.measureText(getText()) > availableWidth && visibleIndex <= currentIndex) {
+        while (paint.measureText(getText()) > maxTextWidth && visibleIndex <= currentIndex) {
             visibleIndex++
         }
 
@@ -42,7 +41,6 @@ class PiManager {
     }
 
     fun back() {
-        println(currentIndex)
         if (currentIndex == -1) return
         isCorrect[currentIndex] = false
         currentText.deleteAt(currentText.length - 1)
