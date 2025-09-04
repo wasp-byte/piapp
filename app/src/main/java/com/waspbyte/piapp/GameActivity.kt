@@ -23,6 +23,11 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
 
         digitsTv = findViewById<TextView>(R.id.digits_tv)
+
+        findViewById<Button>(R.id.back_btn).setOnClickListener {
+            finish()
+        }
+
         val width = Resources.getSystem().displayMetrics.widthPixels
         val availableWidth = width - digitsTv.marginStart - digitsTv.marginEnd
         piManager = PiManager(digitsTv, availableWidth)
