@@ -21,112 +21,239 @@
         android:id="@+id/keyboard_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="30dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/button1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:onClick="addText"
-                android:text="7" />
+                android:text="1"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/button2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:onClick="addText"
-                android:text="8" />
+                android:text="2"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/button3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:onClick="addText"
-                android:text="9" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addText"
-                android:text="4" />
+                android:text="3"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button_delete"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addText"
-                android:text="5" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addText"
-                android:text="6" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addText"
-                android:text="1" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addText"
-                android:text="2" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addText"
-                android:text="3" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/delete_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/button_delete"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:onClick="delete"
-                android:text="delete" />
+                android:textSize="50sp"
+                app:backgroundTint="?attr/colorTertiary"
+                app:icon="@drawable/backspace"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/button4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:onClick="addText"
-                android:text="0" />
+                android:text="4"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
 
             <Button
-                android:id="@+id/done_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
+                android:id="@+id/button5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="addText"
+                android:text="5"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="addText"
+                android:text="6"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button_clear"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+
+            <Button
+                android:id="@+id/button_clear"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="clear"
+                android:textSize="50sp"
+                app:backgroundTint="?attr/colorTertiary"
+                app:icon="@drawable/clear"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="addText"
+                android:text="7"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button8"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="addText"
+                android:text="8"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button9"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="addText"
+                android:text="9"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/button0"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+
+            <Button
+                android:id="@+id/button0"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="addText"
+                android:text="0"
+                android:textSize="50sp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 
 

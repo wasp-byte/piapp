@@ -39,6 +39,11 @@ class GameActivity : AppCompatActivity() {
         formatText(piManager.getColors())
     }
 
+    fun clear(view: View) {
+        piManager.clear()
+        formatText(piManager.getColors())
+    }
+
     private fun formatText(colors: List<Int>) {
         val text = piManager.getText()
         if (text.isEmpty()) {

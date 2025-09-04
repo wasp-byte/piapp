@@ -48,6 +48,14 @@ class PiManager(val textView: TextView, val maxTextWidth: Int) {
         if (visibleIndex > 0) visibleIndex--
     }
 
+    fun clear() {
+        currentIndex = -1
+        visibleIndex = 0
+        wrongAttempts.clear()
+        isCorrect.clear()
+        textView.text = ""
+    }
+
     fun getPoints(): Float {
         val initialPoints = currentIndex * 5
         var points = initialPoints
