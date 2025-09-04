@@ -1,7 +1,7 @@
 import android.graphics.Color
 import android.widget.TextView
 
-class PiManager {
+class PiManager(val textView: TextView, val maxTextWidth: Int) {
     companion object {
         private const val PI =
             "314159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612"
@@ -16,7 +16,7 @@ class PiManager {
 
     fun isDot() = currentIndex == DOT - 1
 
-    fun next(c: Char, textView: TextView, maxTextWidth: Int): Char? {
+    fun next(c: Char): Char? {
         currentIndex++
         if (wrongAttempts.size <= currentIndex) {
             wrongAttempts.add(0)

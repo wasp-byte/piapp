@@ -3,71 +3,46 @@ package com.waspbyte.piapp
 import PiManager
 import android.content.res.Resources
 import android.os.Bundle
-import android.text.Editable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
-import android.view.KeyEvent
-import android.widget.EditText
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.isDigitsOnly
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 
 class GameActivity : AppCompatActivity() {
     private lateinit var piManager: PiManager
+    private lateinit var digitsTv: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        piManager = PiManager()
-
-        val gameView = findViewById<GameView>(R.id.game_view)
-
-        val digitsEt = gameView.findViewById<EditText>(R.id.digits_et)
-        val pastDigitsTv = gameView.findViewById<TextView>(R.id.past_digits_tv)
-
-        digitsEt.requestFocus()
-
-        digitsEt.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
-                piManager.back()
-                formatText(piManager.getColors(), pastDigitsTv)
-            }
-            false
-        }
-
+        digitsTv = findViewById<TextView>(R.id.digits_tv)
         val width = Resources.getSystem().displayMetrics.widthPixels
-
-        digitsEt.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isEmpty()) return
-                if (!s.isDigitsOnly()) {
-                    digitsEt.text.clear()
-                    return
-                }
-
-                val availableWidth = width - gameView.paddingLeft - gameView.paddingRight - digitsEt.width
-                piManager.next(s[0], pastDigitsTv, availableWidth)
-                piManager.check(s[0])
-
-                digitsEt.text.clear()
-
-                formatText(piManager.getColors(), pastDigitsTv)
-                println(piManager.getPoints())
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) {}
-        })
+        val availableWidth = width - digitsTv.marginStart - digitsTv.marginEnd
+        piManager = PiManager(digitsTv, availableWidth)
     }
 
-    private fun formatText(colors: List<Int>, textView: TextView) {
+    fun addText(view: View) {
+        piManager.next((view as Button).text[0])
+        piManager.check(view.text[0])
+        formatText(piManager.getColors())
+    }
+
+    fun delete(view: View) {
+        piManager.back()
+        formatText(piManager.getColors())
+    }
+
+    private fun formatText(colors: List<Int>) {
         val text = piManager.getText()
         if (text.isEmpty()) {
-            textView.text = ""
+            digitsTv.text = ""
             return
         }
 
@@ -76,14 +51,12 @@ class GameActivity : AppCompatActivity() {
             val color = colors[i]
             val span = SpannableString(char.toString()).apply {
                 setSpan(
-                    ForegroundColorSpan(color),
-                    0, length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
             }
             spannable.append(span)
         }
 
-        textView.text = spannable
+        digitsTv.text = spannable
     }
 }
