@@ -38,9 +38,11 @@
                 android:id="@+id/pi_tv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:text="31415926535897932384626433832795028"
                 android:textSize="40sp"
                 app:layout_constraintBottom_toTopOf="@+id/show_more_btn"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:transitionName="pi"/>
 
             <Button
                 android:id="@+id/show_more_btn"

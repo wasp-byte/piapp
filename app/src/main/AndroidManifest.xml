@@ -26,6 +26,12 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTask">
         </activity>
+        <activity
+            android:name=".PiActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask">
+        </activity>
     </application>
 
 </manifest>
