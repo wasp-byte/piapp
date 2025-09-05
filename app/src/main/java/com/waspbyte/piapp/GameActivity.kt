@@ -1,6 +1,7 @@
 package com.waspbyte.piapp
 
 import PiManager
+import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.text.SpannableString
@@ -37,7 +38,7 @@ class GameActivity : AppCompatActivity() {
         piManager.next((view as Button).text[0])
         piManager.check(view.text[0])
         formatText()
-        println(piManager.getPoints())
+        println(piManager.getScore())
     }
 
     fun delete(view: View) {
@@ -46,8 +47,10 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun done(view: View) {
-        piManager.clear()
-        formatText()
+        val intent = Intent(this, EndScreenActivity::class.java)
+        intent.putExtra("SCORE", piManager.getScore())
+        startActivity(intent)
+//        finish()
     }
 
     private fun formatText() {

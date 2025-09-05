@@ -32,6 +32,12 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTask">
         </activity>
+        <activity
+            android:name=".EndScreenActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask">
+        </activity>
     </application>
 
 </manifest>

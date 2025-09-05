@@ -57,7 +57,7 @@ class PiManager(val textView: TextView, val maxTextWidth: Int) {
         textView.text = ""
     }
 
-    fun getPoints(): Float {
+    fun getScore(): Float {
         val initialPoints = (currentIndex + 1) * 5
         var points = initialPoints
 
