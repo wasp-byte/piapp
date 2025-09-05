@@ -1,5 +1,6 @@
 import android.graphics.Color
 import android.widget.TextView
+import kotlin.math.min
 
 class PiManager(val textView: TextView, val maxTextWidth: Int) {
     companion object {
@@ -57,13 +58,18 @@ class PiManager(val textView: TextView, val maxTextWidth: Int) {
     }
 
     fun getPoints(): Float {
-        val initialPoints = currentIndex * 5
+        val initialPoints = (currentIndex + 1) * 5
         var points = initialPoints
 
-        points -= isCorrect.map { if (it) 0 else -5 }.sum()
-        points -= wrongAttempts.sum()
+        for ((correct, attempts) in isCorrect.zip(wrongAttempts)) {
+            points -= if (correct) {
+                min(attempts, 5)
+            } else {
+                5
+            }
+        }
 
-        return points / initialPoints.toFloat()
+        return points.toFloat() / initialPoints.toFloat()
     }
 
     fun getText(): String {

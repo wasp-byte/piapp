@@ -22,7 +22,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        digitsTv = findViewById<TextView>(R.id.digits_tv)
+        digitsTv = findViewById(R.id.digits_tv)
 
         findViewById<Button>(R.id.back_btn).setOnClickListener {
             finish()
@@ -36,25 +36,27 @@ class GameActivity : AppCompatActivity() {
     fun addText(view: View) {
         piManager.next((view as Button).text[0])
         piManager.check(view.text[0])
-        formatText(piManager.getColors())
+        formatText()
+        println(piManager.getPoints())
     }
 
     fun delete(view: View) {
         piManager.back()
-        formatText(piManager.getColors())
+        formatText()
     }
 
-    fun clear(view: View) {
+    fun done(view: View) {
         piManager.clear()
-        formatText(piManager.getColors())
+        formatText()
     }
 
-    private fun formatText(colors: List<Int>) {
+    private fun formatText() {
         val text = piManager.getText()
         if (text.isEmpty()) {
             digitsTv.text = ""
             return
         }
+        val colors = piManager.getColors()
 
         val spannable = SpannableStringBuilder()
         text.forEachIndexed { i, char ->
