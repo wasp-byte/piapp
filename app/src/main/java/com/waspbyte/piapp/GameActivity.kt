@@ -1,13 +1,15 @@
 package com.waspbyte.piapp
 
 import PiManager
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
-import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.TypedValue
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -53,7 +55,13 @@ class GameActivity : AppCompatActivity() {
 //        finish()
     }
 
+
     private fun formatText() {
+        val typedValue = TypedValue()
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorError, typedValue, true
+        )
+        println(typedValue.data)
         val text = piManager.getText()
         if (text.isEmpty()) {
             digitsTv.text = ""
@@ -61,17 +69,15 @@ class GameActivity : AppCompatActivity() {
         }
         val colors = piManager.getColors()
 
-        val spannable = SpannableStringBuilder()
+        digitsTv.text = ""
+
         text.forEachIndexed { i, char ->
             val color = colors[i]
-            val span = SpannableString(char.toString()).apply {
-                setSpan(
-                    ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
+            val span = SpannableString(char.toString())
+            if (color != Color.BLACK) {
+                span.setSpan(ForegroundColorSpan(typedValue.data), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
-            spannable.append(span)
+            digitsTv.append(span)
         }
-
-        digitsTv.text = spannable
     }
 }

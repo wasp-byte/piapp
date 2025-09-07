@@ -101,7 +101,7 @@
             style="@style/KeyboardButton"
             android:onClick="done"
             app:backgroundTint="?attr/colorTertiary"
-            app:icon="@drawable/clear"
+            app:icon="@drawable/done"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="50sp" />
