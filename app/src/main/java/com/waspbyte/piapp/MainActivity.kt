@@ -3,7 +3,6 @@ package com.waspbyte.piapp
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -23,10 +22,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
+
         val piTv = findViewById<TextView>(R.id.pi_tv)
+        val todayTv = findViewById<TextView>(R.id.today_tv)
+        todayTv.text = (sharedPref.getInt(getString(R.string.index), 0) + 1).toString()
 
         findViewById<MaterialButton>(R.id.to_game_btn).setOnClickListener {
-            Log.d("BUTTONS", "BUTTON!")
             startActivity(Intent(this, GameActivity::class.java))
         }
 

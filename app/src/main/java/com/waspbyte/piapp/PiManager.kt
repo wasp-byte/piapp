@@ -72,6 +72,10 @@ class PiManager(val textView: TextView, val maxTextWidth: Int) {
         return points.toFloat() / initialPoints.toFloat()
     }
 
+    fun getCurrentIndex(): Int {
+        return currentIndex
+    }
+
     fun getText(): String {
         if (currentIndex < 0) return ""
         val start = visibleIndex
