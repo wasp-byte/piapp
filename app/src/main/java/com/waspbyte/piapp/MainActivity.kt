@@ -36,4 +36,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, PiActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(this, piTv, "pi").toBundle())
         }
     }
+
+    public override fun onRestart() {
+        super.onRestart()
+        recreate()
+    }
 }
