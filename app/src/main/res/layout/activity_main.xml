@@ -43,6 +43,7 @@
                     android:id="@+id/pi_tv"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:textColor="?attr/colorSurfaceContainer"
                     android:textSize="40sp"
                     android:transitionName="pi"
                     app:layout_constraintBottom_toTopOf="@+id/show_more_btn"
