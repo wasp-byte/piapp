@@ -1,7 +1,6 @@
 package com.waspbyte.piapp
 
 import PiManager
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
@@ -21,6 +20,8 @@ class GameActivity : AppCompatActivity() {
     private lateinit var piManager: PiManager
     private lateinit var digitsTv: TextView
 
+    private var maxTextWidth: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -32,12 +33,12 @@ class GameActivity : AppCompatActivity() {
         }
 
         val width = Resources.getSystem().displayMetrics.widthPixels
-        val availableWidth = width - digitsTv.marginStart - digitsTv.marginEnd
-        piManager = PiManager(digitsTv, availableWidth)
+        maxTextWidth = width - digitsTv.marginStart - digitsTv.marginEnd
+        piManager = PiManager(this)
     }
 
     fun addText(view: View) {
-        piManager.next((view as Button).text[0])
+        piManager.next((view as Button).text[0], digitsTv, maxTextWidth)
         piManager.check(view.text[0])
         formatText()
         println(piManager.getScore())

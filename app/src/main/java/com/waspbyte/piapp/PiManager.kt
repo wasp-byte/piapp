@@ -1,11 +1,23 @@
+import android.content.Context
 import android.graphics.Color
 import android.widget.TextView
+import com.waspbyte.piapp.R
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import kotlin.math.min
 
-class PiManager(val textView: TextView, val maxTextWidth: Int) {
+
+class PiManager(context: Context) {
+
+    var PI: String
+
+    init {
+        val inputStream = context.resources.openRawResource(R.raw.pi)
+        val reader = BufferedReader(InputStreamReader(inputStream))
+        PI = reader.readLine()
+        reader.close()
+    }
     companion object {
-        private const val PI =
-            "314159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612"
         private const val DOT = 1
     }
 
@@ -17,7 +29,7 @@ class PiManager(val textView: TextView, val maxTextWidth: Int) {
 
     fun isDot() = currentIndex == DOT - 1
 
-    fun next(c: Char): Char? {
+    fun next(c: Char, textView: TextView, maxTextWidth: Int): Char? {
         currentIndex++
         if (wrongAttempts.size <= currentIndex) {
             wrongAttempts.add(0)
@@ -47,14 +59,6 @@ class PiManager(val textView: TextView, val maxTextWidth: Int) {
         currentText.deleteAt(currentText.length - 1)
         currentIndex--
         if (visibleIndex > 0) visibleIndex--
-    }
-
-    fun clear() {
-        currentIndex = -1
-        visibleIndex = 0
-        wrongAttempts.clear()
-        isCorrect.clear()
-        textView.text = ""
     }
 
     fun getScore(): Float {

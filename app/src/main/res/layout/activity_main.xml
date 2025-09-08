@@ -29,30 +29,26 @@
         app:layout_constraintTop_toBottomOf="@+id/today_tv"
         app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp">
 
-            <TextView
-                android:id="@+id/pi_tv"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text="31415926535897932384626433832795028"
-                android:textSize="40sp"
-                app:layout_constraintBottom_toTopOf="@+id/show_more_btn"
-                app:layout_constraintTop_toTopOf="parent"
-                android:transitionName="pi"/>
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
-            <Button
-                android:id="@+id/show_more_btn"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="show more"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/pi_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="40sp"
+                    android:transitionName="pi"
+                    app:layout_constraintBottom_toTopOf="@+id/show_more_btn"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </ScrollView>
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <Button
