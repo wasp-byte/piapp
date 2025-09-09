@@ -1,18 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="40dp">
 
     <TextView
-        android:id="@+id/score_tv"
+        android:id="@+id/index_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:textSize="40sp"
-        android:text="Your score: 0.0%"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/accuracy_tv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/accuracy_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/back_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/streak_tv"
+        app:layout_constraintTop_toBottomOf="@+id/index_tv" />
+
+    <TextView
+        android:id="@+id/streak_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/back_btn"
+        app:layout_constraintLeft_toRightOf="@+id/accuracy_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/index_tv" />
+
+    <Button
+        android:id="@+id/back_btn"
+        style="@style/KeyboardButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/home"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="42sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/break_v" />
+
+    <View
+        android:id="@+id/break_v"
+        android:layout_width="20dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/back_btn"
+        app:layout_constraintLeft_toRightOf="@id/back_btn"
+        app:layout_constraintRight_toLeftOf="@+id/again_btn"
+        app:layout_constraintTop_toTopOf="@+id/back_btn" />
+
+    <Button
+        android:id="@+id/again_btn"
+        style="@style/KeyboardButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/again"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="42sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/break_v"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
