@@ -23,12 +23,11 @@ class EndScreenActivity : AppCompatActivity() {
 
         val accuracyTv = findViewById<TextView>(R.id.accuracy_tv)
         val indexTv = findViewById<TextView>(R.id.index_tv)
-        val streakTv = findViewById<TextView>(R.id.streak_tv)
         val score = intent.getFloatExtra("SCORE", 1.0f)
         val currentIndex = intent.getIntExtra("CURRENT_INDEX", 0)
 
-        indexTv.text = "Reached: $currentIndex"
-        accuracyTv.text = "Accuracy: ${"%.2f".format(score * 100f)}%"
+        indexTv.text = currentIndex.toString()
+        accuracyTv.text = "${"%.2f".format(score * 100f)}%"
 
         val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
         val previousIndex = sharedPref.getInt(getString(R.string.index), 0)
