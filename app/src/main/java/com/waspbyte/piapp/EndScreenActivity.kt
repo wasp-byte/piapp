@@ -2,13 +2,18 @@ package com.waspbyte.piapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 class EndScreenActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -42,10 +47,13 @@ class EndScreenActivity : AppCompatActivity() {
                     apply()
                 }
 
-                streakTv.text = "Reached daily goal!"
+                val fireIv = findViewById<ImageView>(R.id.fire_iv)
+                fireIv.visibility = View.VISIBLE
+                (fireIv.drawable as Animatable).start()
+                Timer().schedule(2000) {
+                    fireIv.visibility = View.GONE
+                }
             }
-        } else if (isNewDay) {
-            streakTv.text = "Failed to reach daily goal."
         }
 
         findViewById<Button>(R.id.back_btn).setOnClickListener {
