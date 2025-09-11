@@ -50,16 +50,7 @@ class MainActivity : AppCompatActivity() {
             com.google.android.material.R.attr.colorTertiary, typedValue, true
         )
         val colorNew = typedValue.data
-        val span = SpannableString(piManager.PI.slice(0..index))
-        span.setSpan(ForegroundColorSpan(colorLearned), 0, index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(
-            ForegroundColorSpan(colorNew),
-            index,
-            index + 1,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        val inflater = layoutInflater;
-        val piItem = inflater.inflate(R.layout.pi_item, null);
+        val piItem = layoutInflater.inflate(R.layout.pi_item, null);
         val paint = piItem.findViewById<TextView>(R.id.pi_tv).paint
         val charWidth = paint.measureText("1")
         val width = Resources.getSystem().displayMetrics.widthPixels
@@ -70,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = piAdapter
         val todayTv = findViewById<TextView>(R.id.today_tv)
-        todayTv.text = (index + 1).toString()
+        todayTv.text = index.toString()
 
         findViewById<MaterialButton>(R.id.to_game_btn).setOnClickListener {
             startActivity(Intent(this, GameActivity::class.java))
