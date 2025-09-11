@@ -34,21 +34,10 @@
             android:layout_height="match_parent"
             android:layout_margin="20dp">
 
-            <ScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pi_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
-
-                <TextView
-                    android:id="@+id/pi_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:textColor="?attr/colorSurfaceContainer"
-                    android:textSize="40sp"
-                    android:transitionName="pi"
-                    app:layout_constraintBottom_toTopOf="@+id/show_more_btn"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </ScrollView>
+                android:layout_height="match_parent" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

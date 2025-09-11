@@ -2,26 +2,28 @@ package com.waspbyte.piapp
 
 import PiManager
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
-import android.widget.Button
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import java.text.SimpleDateFormat
-import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import kotlin.math.min
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,11 +52,23 @@ class MainActivity : AppCompatActivity() {
         val colorNew = typedValue.data
         val span = SpannableString(piManager.PI.slice(0..index))
         span.setSpan(ForegroundColorSpan(colorLearned), 0, index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(ForegroundColorSpan(colorNew), index, index+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        val piTv = findViewById<TextView>(R.id.pi_tv)
-        piTv.text = span
-        // TODO
-        piTv.append(piManager.PI.slice(index+1..10000))
+        span.setSpan(
+            ForegroundColorSpan(colorNew),
+            index,
+            index + 1,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        val inflater = layoutInflater;
+        val piItem = inflater.inflate(R.layout.pi_item, null);
+        val paint = piItem.findViewById<TextView>(R.id.pi_tv).paint
+        val charWidth = paint.measureText("1")
+        val width = Resources.getSystem().displayMetrics.widthPixels
+        // TODO - width of textview
+        val piAdapter =
+            PiAdapter(piManager.PI, index, colorLearned, colorNew, (width / charWidth).toInt() - 4)
+        val recyclerView: RecyclerView = findViewById(R.id.pi_rv)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = piAdapter
         val todayTv = findViewById<TextView>(R.id.today_tv)
         todayTv.text = (index + 1).toString()
 
@@ -64,8 +78,17 @@ class MainActivity : AppCompatActivity() {
 
         val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val today = sdf.format(Date())
-        if (TimeUnit.DAYS.convert(sdf.parse(today)!!.time - sdf.parse(sharedPref.getString(getString(R.string.previous_date), today)!!)!!.time, TimeUnit.MILLISECONDS) > 1 ) {
-            with (sharedPref.edit()) {
+        if (TimeUnit.DAYS.convert(
+                sdf.parse(today)!!.time - sdf.parse(
+                    sharedPref.getString(
+                        getString(
+                            R.string.previous_date
+                        ), today
+                    )!!
+                )!!.time, TimeUnit.MILLISECONDS
+            ) > 1
+        ) {
+            with(sharedPref.edit()) {
                 putInt(getString(R.string.streak), 0)
                 apply()
             }
@@ -81,5 +104,61 @@ class MainActivity : AppCompatActivity() {
     public override fun onRestart() {
         super.onRestart()
         recreate()
+    }
+
+    class PiAdapter(
+        private val text: String,
+        private val index: Int,
+        private val colorLearned: Int,
+        private val colorNew: Int,
+        private val maxWidth: Int
+    ) :
+        RecyclerView.Adapter<PiAdapter.ViewHolder>() {
+        private var dataSet: Array<SpannableString>
+
+        init {
+            dataSet = Array(text.length / maxWidth) { i ->
+                val span = SpannableString(text.slice(i * maxWidth..<i * maxWidth + maxWidth))
+                if (i * maxWidth <= index) {
+                    span.setSpan(
+                        ForegroundColorSpan(colorLearned),
+                        0,
+                        min(index - i * maxWidth, if (i != 0) i * maxWidth else maxWidth),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    if (index + 1 <= (i + 1) * maxWidth) {
+                        span.setSpan(
+                            ForegroundColorSpan(colorNew),
+                            index - i * maxWidth,
+                            index - i * maxWidth + 1,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                }
+                span
+            }
+        }
+
+        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val textView: TextView
+
+            init {
+                textView = view.findViewById(R.id.pi_tv)
+            }
+        }
+
+        override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.pi_item, viewGroup, false)
+
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+            viewHolder.textView.text = dataSet[position]
+        }
+
+        override fun getItemCount() = dataSet.size
+
     }
 }
