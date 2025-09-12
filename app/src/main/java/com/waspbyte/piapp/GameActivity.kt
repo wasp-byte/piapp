@@ -1,6 +1,5 @@
 package com.waspbyte.piapp
 
-import PiManager
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color

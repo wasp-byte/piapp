@@ -14,6 +14,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.Timer
 import kotlin.concurrent.schedule
+import androidx.core.content.edit
 
 class EndScreenActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -35,15 +36,16 @@ class EndScreenActivity : AppCompatActivity() {
         val today = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         val isNewDay = sharedPref.getString(getString(R.string.previous_date), today) != today || sharedPref.getInt(getString(R.string.streak), 0) == 0
         if (score >= 0.9 && previousIndex < currentIndex) {
-            with (sharedPref.edit()) {
+            sharedPref.edit {
                 putInt(getString(R.string.index), currentIndex)
-                apply()
             }
             if (isNewDay) {
-                with(sharedPref.edit()) {
+                sharedPref.edit {
                     putString(getString(R.string.previous_date), today)
-                    putInt(getString(R.string.streak), sharedPref.getInt(getString(R.string.streak), 0) + 1)
-                    apply()
+                    putInt(
+                        getString(R.string.streak),
+                        sharedPref.getInt(getString(R.string.streak), 0) + 1
+                    )
                 }
 
                 val fireIv = findViewById<ImageView>(R.id.fire_iv)

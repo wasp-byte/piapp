@@ -1,11 +1,11 @@
+package com.waspbyte.piapp
+
 import android.content.Context
 import android.graphics.Color
 import android.widget.TextView
-import com.waspbyte.piapp.R
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.math.min
-
 
 class PiManager(context: Context) {
 
@@ -17,17 +17,14 @@ class PiManager(context: Context) {
         PI = reader.readLine()
         reader.close()
     }
-    companion object {
-        private const val DOT = 1
-    }
-
+    val DOT = 1
     private var currentIndex = -1
     private var currentText = StringBuilder()
     private var visibleIndex = 0
     private var wrongAttempts = mutableListOf<Int>()
     private var isCorrect = mutableListOf<Boolean>()
 
-    fun isDot() = currentIndex == DOT - 1
+    fun piWithDot() = "${PI.slice(0..<DOT)}.${PI.slice(DOT..<PI.length)}"
 
     fun next(c: Char, textView: TextView, maxTextWidth: Int): Char? {
         currentIndex++
