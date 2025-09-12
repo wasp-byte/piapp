@@ -3,5 +3,5 @@
     android:id="@+id/pi_tv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="?attr/colorSurfaceContainer"
+    android:textColor="?attr/colorPrimaryFixedDim"
     android:textSize="40sp" />

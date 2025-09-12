@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorSurfaceContainerHighest">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/pi_tv"
         android:layout_width="match_parent"
-        android:text="31415926535897932384626433832795028"
         android:layout_height="match_parent"
+        android:text="31415926535897932384626433832795028"
         android:textSize="40sp"
-        android:transitionName="pi"/>
+        android:transitionName="pi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

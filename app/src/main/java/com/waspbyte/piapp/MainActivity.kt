@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         val typedValue = TypedValue()
         theme.resolveAttribute(
-            com.google.android.material.R.attr.colorOnSurfaceVariant, typedValue, true
+            com.google.android.material.R.attr.colorOnSurface, typedValue, true
         )
         val colorLearned = typedValue.data
         theme.resolveAttribute(
