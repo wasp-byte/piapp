@@ -26,6 +26,9 @@ import kotlin.math.min
 import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var piManager: PiManager
+    private lateinit var piAdapter: PiAdapter
+    private lateinit var streakBtn: MaterialButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val piManager = PiManager(this)
+        piManager = PiManager(this)
 
         val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
         var index = sharedPref.getInt(getString(R.string.index), 0)
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         val charWidth = paint.measureText("1")
         val width = Resources.getSystem().displayMetrics.widthPixels
         // TODO - width of textview
-        val piAdapter =
+        piAdapter =
             PiAdapter(
                 piManager.piWithDot(),
                 index,
@@ -90,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 putInt(getString(R.string.streak), 0)
             }
         }
-        val streakBtn = findViewById<MaterialButton>(R.id.streak_btn)
+        streakBtn = findViewById<MaterialButton>(R.id.streak_btn)
         val streak = sharedPref.getInt(getString(R.string.streak), 0)
         if (streak > 0) {
             streakBtn.setIconTintResource(R.color.theme_secondary)
@@ -100,7 +103,17 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onRestart() {
         super.onRestart()
-        recreate()
+        val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
+        var index = sharedPref.getInt(getString(R.string.index), 0)
+        if (index >= piManager.DOT) index++
+        val todayTv = findViewById<TextView>(R.id.today_tv)
+        todayTv.text = index.toString()
+        piAdapter.updateIndex(index)
+        val streak = sharedPref.getInt(getString(R.string.streak), 0)
+        if (streak > 0) {
+            streakBtn.setIconTintResource(R.color.theme_secondary)
+        }
+        streakBtn.text = streak.toString()
     }
 
     class PiAdapter(
@@ -130,6 +143,35 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             span
+        }
+
+        fun updateIndex(indexNew: Int) {
+            if (indexNew == index) return
+            val dataSetIndex = index / maxWidth
+            for (i in 0..(indexNew / maxWidth) - dataSetIndex) {
+                val currentIndex = dataSetIndex + i
+                val span = dataSet[currentIndex]
+                // TODO boilerplate
+                span.setSpan(
+                    ForegroundColorSpan(colorLearned),
+                    0,
+                    min(
+                        indexNew - currentIndex * maxWidth,
+                        if (currentIndex != 0) currentIndex * maxWidth else maxWidth
+                    ),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                if (indexNew + 1 <= (currentIndex + 1) * maxWidth) {
+                    span.setSpan(
+                        ForegroundColorSpan(colorNew),
+                        indexNew - currentIndex * maxWidth,
+                        indexNew - currentIndex * maxWidth + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                dataSet[currentIndex] = span
+            }
+            notifyDataSetChanged()
         }
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
