@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pi_cv"
         style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -55,7 +56,7 @@
         app:iconTint="?attr/colorOnSurfaceVariant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/to_game_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/pi_cv" />
 
     <Button
         android:id="@+id/to_game_btn"

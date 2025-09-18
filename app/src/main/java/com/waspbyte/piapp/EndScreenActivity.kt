@@ -2,7 +2,8 @@ package com.waspbyte.piapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Animatable
+import android.graphics.drawable.Animatable2
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -12,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.Timer
-import kotlin.concurrent.schedule
 import androidx.core.content.edit
 
 class EndScreenActivity : AppCompatActivity() {
@@ -50,10 +49,14 @@ class EndScreenActivity : AppCompatActivity() {
 
                 val fireIv = findViewById<ImageView>(R.id.fire_iv)
                 fireIv.visibility = View.VISIBLE
-                (fireIv.drawable as Animatable).start()
-                Timer().schedule(2000) {
-                    fireIv.visibility = View.GONE
-                }
+                val animatableVector = (fireIv.drawable as Animatable2)
+                animatableVector.start()
+                animatableVector.registerAnimationCallback(object : Animatable2.AnimationCallback() {
+                    override fun onAnimationEnd(drawable: Drawable?) {
+                        super.onAnimationEnd(drawable)
+                        fireIv.visibility = View.GONE
+                    }
+                })
             }
         }
 
