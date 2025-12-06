@@ -40,7 +40,6 @@ class GameActivity : AppCompatActivity() {
         piManager.next((view as Button).text[0], digitsTv, maxTextWidth)
         piManager.check(view.text[0])
         formatText()
-        println(piManager.getScore())
     }
 
     fun delete(view: View) {
@@ -62,7 +61,6 @@ class GameActivity : AppCompatActivity() {
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorError, typedValue, true
         )
-        println(typedValue.data)
         val text = piManager.getText()
         if (text.isEmpty()) {
             digitsTv.text = ""
@@ -80,5 +78,11 @@ class GameActivity : AppCompatActivity() {
             }
             digitsTv.append(span)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        piManager = PiManager(this)
+        digitsTv.text = ""
     }
 }
