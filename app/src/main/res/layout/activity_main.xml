@@ -31,6 +31,7 @@
         app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
 
         <LinearLayout
+            android:id="@+id/pi_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp">
@@ -67,6 +68,7 @@
         android:text="Challenge"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pi_cv"
         app:layout_constraintEnd_toStartOf="@+id/streak_btn"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

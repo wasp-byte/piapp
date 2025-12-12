@@ -10,9 +10,11 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,7 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.math.min
 import androidx.core.content.edit
+import androidx.core.view.marginStart
 
 class MainActivity : AppCompatActivity() {
     private lateinit var piManager: PiManager
@@ -56,16 +59,17 @@ class MainActivity : AppCompatActivity() {
         val colorNew = typedValue.data
         val piItem = layoutInflater.inflate(R.layout.pi_item, null)
         val paint = piItem.findViewById<TextView>(R.id.pi_tv).paint
-        val charWidth = paint.measureText("1")
-        val width = Resources.getSystem().displayMetrics.widthPixels
-        // TODO - width of textview
+        val piCv = findViewById<CardView>(R.id.pi_cv)
+        val piLl = findViewById<LinearLayout>(R.id.pi_ll)
+        val charWidth = paint.measureText("0")
+        val width = Resources.getSystem().displayMetrics.widthPixels - (piCv.marginStart + piLl.marginStart) * 2
         piAdapter =
             PiAdapter(
                 piManager.piWithDot(),
                 index,
                 colorLearned,
                 colorNew,
-                (width / charWidth).toInt() - 4
+                (width / charWidth).toInt()
             )
         val recyclerView: RecyclerView = findViewById(R.id.pi_rv)
         recyclerView.layoutManager = LinearLayoutManager(this)
