@@ -15,8 +15,11 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -25,8 +28,6 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.math.min
-import androidx.core.content.edit
-import androidx.core.view.marginStart
 
 class MainActivity : AppCompatActivity() {
     private lateinit var piManager: PiManager
@@ -56,19 +57,21 @@ class MainActivity : AppCompatActivity() {
         )
         val colorNew = typedValue.data
         val piItem = layoutInflater.inflate(R.layout.pi_item, null)
+        val indexWidth =
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 48f, resources.displayMetrics)
         val paint = piItem.findViewById<TextView>(R.id.pi_tv).paint
         val piCv = findViewById<CardView>(R.id.pi_cv)
         val piLl = findViewById<LinearLayout>(R.id.pi_ll)
         val charWidth = paint.measureText("0")
-        val width = Resources.getSystem().displayMetrics.widthPixels - (piCv.marginStart + piLl.marginStart) * 2
-        piAdapter =
-            PiAdapter(
-                piManager.piWithDot(),
-                index + if (index >= piManager.DOT) 1 else 0,
-                colorLearned,
-                colorNew,
-                (width / charWidth).toInt()
-            )
+        val width =
+            Resources.getSystem().displayMetrics.widthPixels - (piCv.marginStart * 2 + piLl.marginEnd) - indexWidth
+        piAdapter = PiAdapter(
+            piManager.piWithDot(),
+            index + if (index >= piManager.DOT) 1 else 0,
+            colorLearned,
+            colorNew,
+            (width / charWidth).toInt()
+        )
         val recyclerView: RecyclerView = findViewById(R.id.pi_rv)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = piAdapter
@@ -122,23 +125,22 @@ class MainActivity : AppCompatActivity() {
         private val index: Int,
         private val colorLearned: Int,
         private val colorNew: Int,
-        private val maxWidth: Int
-    ) :
-        RecyclerView.Adapter<PiAdapter.ViewHolder>() {
-        private var dataSet = Array(text.length / maxWidth) { i ->
-            val span = SpannableString(text.slice(i * maxWidth..<(i + 1) * maxWidth))
-            if (i * maxWidth <= index) {
+        private val charsPerLine: Int
+    ) : RecyclerView.Adapter<PiAdapter.ViewHolder>() {
+        private var dataSet = Array(text.length / charsPerLine) { i ->
+            val span = SpannableString(text.slice(i * charsPerLine..<(i + 1) * charsPerLine))
+            if (i * charsPerLine <= index) {
                 span.setSpan(
                     ForegroundColorSpan(colorLearned),
                     0,
-                    min(index - i * maxWidth, if (i != 0) i * maxWidth else maxWidth),
+                    min(index - i * charsPerLine, if (i != 0) i * charsPerLine else charsPerLine),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                if (index + 1 <= (i + 1) * maxWidth) {
+                if (index + 1 <= (i + 1) * charsPerLine) {
                     span.setSpan(
                         ForegroundColorSpan(colorNew),
-                        index - i * maxWidth,
-                        index - i * maxWidth + 1,
+                        index - i * charsPerLine,
+                        index - i * charsPerLine + 1,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
                 }
@@ -148,25 +150,22 @@ class MainActivity : AppCompatActivity() {
 
         fun updateIndex(indexNew: Int) {
             if (indexNew == index) return
-            val dataSetIndex = index / maxWidth
-            for (i in 0..(indexNew / maxWidth) - dataSetIndex) {
+            val dataSetIndex = index / charsPerLine
+            for (i in 0..(indexNew / charsPerLine) - dataSetIndex) {
                 val currentIndex = dataSetIndex + i
                 val span = dataSet[currentIndex]
                 // TODO boilerplate
                 span.setSpan(
-                    ForegroundColorSpan(colorLearned),
-                    0,
-                    min(
-                        indexNew - currentIndex * maxWidth,
-                        if (currentIndex != 0) currentIndex * maxWidth else maxWidth
-                    ),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    ForegroundColorSpan(colorLearned), 0, min(
+                        indexNew - currentIndex * charsPerLine,
+                        if (currentIndex != 0) currentIndex * charsPerLine else charsPerLine
+                    ), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                if (indexNew + 1 <= (currentIndex + 1) * maxWidth) {
+                if (indexNew + 1 <= (currentIndex + 1) * charsPerLine) {
                     span.setSpan(
                         ForegroundColorSpan(colorNew),
-                        indexNew - currentIndex * maxWidth,
-                        indexNew - currentIndex * maxWidth + 1,
+                        indexNew - currentIndex * charsPerLine,
+                        indexNew - currentIndex * charsPerLine + 1,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
                 }
@@ -176,18 +175,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val textView: TextView = view.findViewById(R.id.pi_tv)
+            val piTv: TextView = view.findViewById(R.id.pi_tv)
+            val indexTv: TextView = view.findViewById(R.id.index_tv)
         }
 
         override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.pi_item, viewGroup, false)
+            val view =
+                LayoutInflater.from(viewGroup.context).inflate(R.layout.pi_item, viewGroup, false)
 
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-            viewHolder.textView.text = dataSet[position]
+            viewHolder.piTv.text = dataSet[position]
+
+            val index = position * charsPerLine + (if (position > 0) -1 else 0) + (charsPerLine - 1)
+            var s = ""
+            if (index < 1000 && index % 100 < charsPerLine) {
+                if (index >= 100)
+                    s = (index / 100 * 100).toString()
+            } else if (index % 1000 < charsPerLine) {
+                s = "${index / 1000}k"
+            }
+            viewHolder.indexTv.text = s
         }
 
         override fun getItemCount() = dataSet.size

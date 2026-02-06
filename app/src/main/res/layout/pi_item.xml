@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pi_tv"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center">
+
+<TextView
+    android:id="@+id/index_tv"
+    android:layout_width="48sp"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:text="0"
+    android:textColor="?attr/colorTertiaryFixedDim"
+    android:alpha="0.8"
+    android:textSize="16sp" />
+
+<TextView
+    android:id="@+id/pi_tv"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
     android:gravity="center"
-    android:textColor="?attr/colorPrimaryFixedDim"
+    android:textColor="?attr/colorPrimary"
     android:textSize="40sp" />
+
+</LinearLayout>
