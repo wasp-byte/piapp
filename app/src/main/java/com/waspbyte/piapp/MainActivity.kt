@@ -46,8 +46,6 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
         var index = sharedPref.getInt(getString(R.string.index), 0)
-        if (index >= piManager.DOT) index++
-
         val typedValue = TypedValue()
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorOnSurface, typedValue, true
@@ -66,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         piAdapter =
             PiAdapter(
                 piManager.piWithDot(),
-                index,
+                index + if (index >= piManager.DOT) 1 else 0,
                 colorLearned,
                 colorNew,
                 (width / charWidth).toInt()
@@ -74,8 +72,8 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.pi_rv)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = piAdapter
-        val todayTv = findViewById<TextView>(R.id.today_tv)
-        todayTv.text = index.toString()
+        val highscoreTv = findViewById<TextView>(R.id.highscore_tv)
+        highscoreTv.text = index.toString()
 
         findViewById<MaterialButton>(R.id.to_game_btn).setOnClickListener {
             startActivity(Intent(this, GameActivity::class.java))
@@ -108,11 +106,10 @@ class MainActivity : AppCompatActivity() {
     public override fun onRestart() {
         super.onRestart()
         val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
-        var index = sharedPref.getInt(getString(R.string.index), 0)
-        if (index >= piManager.DOT) index++
-        val todayTv = findViewById<TextView>(R.id.today_tv)
-        todayTv.text = index.toString()
-        piAdapter.updateIndex(index)
+        val index = sharedPref.getInt(getString(R.string.index), 0)
+        val highscoreTv = findViewById<TextView>(R.id.highscore_tv)
+        highscoreTv.text = index.toString()
+        piAdapter.updateIndex(index + if (index >= piManager.DOT) 1 else 0)
         val streak = sharedPref.getInt(getString(R.string.streak), 0)
         if (streak > 0) {
             streakBtn.setIconTintResource(R.color.theme_secondary)

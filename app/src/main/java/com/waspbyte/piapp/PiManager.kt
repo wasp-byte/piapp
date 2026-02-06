@@ -70,6 +70,9 @@ class PiManager(context: Context) {
             }
         }
 
+        if (initialPoints == 0)
+            return 1.0f
+
         return points.toFloat() / initialPoints.toFloat()
     }
 
