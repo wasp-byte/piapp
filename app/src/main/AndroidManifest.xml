@@ -27,7 +27,7 @@
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name=".PiActivity"
+            android:name=".StatsActivity"
             android:exported="true"
             android:excludeFromRecents="true"
             android:launchMode="singleTask">

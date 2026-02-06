@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         piManager = PiManager(this)
 
         val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
-        var index = sharedPref.getInt(getString(R.string.index), 0)
+        val index = sharedPref.getInt(getString(R.string.index), 0)
         val typedValue = TypedValue()
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorOnSurface, typedValue, true
@@ -104,6 +104,9 @@ class MainActivity : AppCompatActivity() {
             streakBtn.setIconTintResource(R.color.theme_secondary)
         }
         streakBtn.text = streak.toString()
+        streakBtn.setOnClickListener {
+            startActivity(Intent(this, StatsActivity::class.java))
+        }
     }
 
     public override fun onRestart() {

@@ -41,10 +41,14 @@ class EndScreenActivity : AppCompatActivity() {
             if (isNewDay) {
                 sharedPref.edit {
                     putString(getString(R.string.previous_date), today)
+                    val newStreak = sharedPref.getInt(getString(R.string.streak), 0) + 1
                     putInt(
                         getString(R.string.streak),
-                        sharedPref.getInt(getString(R.string.streak), 0) + 1
+                        newStreak
                     )
+                    if (newStreak > sharedPref.getInt(getString(R.string.best_streak), 0)) {
+                        putInt(getString(R.string.best_streak), newStreak)
+                    }
                 }
 
                 val fireIv = findViewById<ImageView>(R.id.fire_iv)

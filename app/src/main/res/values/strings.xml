@@ -3,5 +3,6 @@
     <string name="index">INDEX</string>
     <string name="prefs">PREFS</string>
     <string name="streak">STREAK</string>
+    <string name="best_streak">BEST_STREAK</string>
     <string name="previous_date">PREVIOUS_DATE</string>
 </resources>
