@@ -97,11 +97,11 @@
 
         <!--  Row 4  -->
         <Button
-            android:id="@+id/button_done"
+            android:id="@+id/button_delete"
             style="@style/KeyboardButton"
-            android:onClick="done"
+            android:onClick="delete"
             app:backgroundTint="?attr/colorTertiary"
-            app:icon="@drawable/done"
+            app:icon="@drawable/backspace"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="50sp" />
@@ -113,14 +113,15 @@
             android:text="0" />
 
         <Button
-            android:id="@+id/button_delete"
+            android:id="@+id/button_done"
             style="@style/KeyboardButton"
-            android:onClick="delete"
+            android:onClick="done"
             app:backgroundTint="?attr/colorTertiary"
-            app:icon="@drawable/backspace"
+            app:icon="@drawable/done"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="50sp" />
+
 
     </GridLayout>
 
