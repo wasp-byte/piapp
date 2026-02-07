@@ -82,24 +82,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GameActivity::class.java))
         }
 
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val today = sdf.format(Date())
-        if (TimeUnit.DAYS.convert(
-                sdf.parse(today)!!.time - sdf.parse(
-                    sharedPref.getString(
-                        getString(
-                            R.string.previous_date
-                        ), today
-                    )!!
-                )!!.time, TimeUnit.MILLISECONDS
-            ) > 1
-        ) {
-            sharedPref.edit {
-                putInt(getString(R.string.streak), 0)
-            }
-        }
         streakBtn = findViewById<MaterialButton>(R.id.streak_btn)
-        val streak = sharedPref.getInt(getString(R.string.streak), 0)
+        val scoreRepository = ScoreRepository(this)
+        val streak = scoreRepository.getCurrentStreak()
         if (streak > 0) {
             streakBtn.setIconTintResource(R.color.theme_secondary)
         }
@@ -116,7 +101,8 @@ class MainActivity : AppCompatActivity() {
         val highscoreTv = findViewById<TextView>(R.id.highscore_tv)
         highscoreTv.text = index.toString()
         piAdapter.updateIndex(index + if (index >= piManager.DOT) 1 else 0)
-        val streak = sharedPref.getInt(getString(R.string.streak), 0)
+        val scoreRepository = ScoreRepository(this)
+        val streak = scoreRepository.getCurrentStreak()
         if (streak > 0) {
             streakBtn.setIconTintResource(R.color.theme_secondary)
         }

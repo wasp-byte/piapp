@@ -26,6 +26,9 @@ class EndScreenActivity : AppCompatActivity() {
         val score = intent.getFloatExtra("SCORE", 1.0f)
         val currentIndex = intent.getIntExtra("CURRENT_INDEX", 0) + 1
 
+        val scoreRepository = ScoreRepository(this)
+        scoreRepository.saveAttempt(currentIndex, score)
+
         indexTv.text = currentIndex.toString()
         accuracyTv.text = "${"%.2f".format(score * 100f)}%"
 
