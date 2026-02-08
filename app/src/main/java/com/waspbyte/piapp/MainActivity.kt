@@ -15,7 +15,6 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.marginEnd
@@ -23,16 +22,14 @@ import androidx.core.view.marginStart
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 class MainActivity : AppCompatActivity() {
     private lateinit var piManager: PiManager
     private lateinit var piAdapter: PiAdapter
     private lateinit var streakBtn: MaterialButton
+    private lateinit var scoreRepository: ScoreRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,9 +41,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         piManager = PiManager(this)
+        scoreRepository = ScoreRepository(this)
 
-        val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
-        val index = sharedPref.getInt(getString(R.string.index), 0)
+        val index = scoreRepository.getCurrentIndex()
         val typedValue = TypedValue()
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorOnSurface, typedValue, true
@@ -83,7 +80,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         streakBtn = findViewById<MaterialButton>(R.id.streak_btn)
-        val scoreRepository = ScoreRepository(this)
         val streak = scoreRepository.getCurrentStreak()
         if (streak > 0) {
             streakBtn.setIconTintResource(R.color.theme_secondary)
@@ -96,12 +92,10 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onRestart() {
         super.onRestart()
-        val sharedPref = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE)
-        val index = sharedPref.getInt(getString(R.string.index), 0)
+        val index = scoreRepository.getCurrentIndex()
         val highscoreTv = findViewById<TextView>(R.id.highscore_tv)
         highscoreTv.text = index.toString()
         piAdapter.updateIndex(index + if (index >= piManager.DOT) 1 else 0)
-        val scoreRepository = ScoreRepository(this)
         val streak = scoreRepository.getCurrentStreak()
         if (streak > 0) {
             streakBtn.setIconTintResource(R.color.theme_secondary)
