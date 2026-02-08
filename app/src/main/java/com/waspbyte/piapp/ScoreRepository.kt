@@ -23,8 +23,10 @@ class ScoreRepository(context: Context) {
             WITH daily AS (
                 SELECT
                     date(completed_at, 'unixepoch') AS day,
-                    MAX(score) AS score
+                    MAX(score) AS score,
+                    accuracy
                 FROM scores
+                WHERE accuracy >= 0.9
                 GROUP BY day
             ),
             ordered AS (
@@ -114,6 +116,7 @@ class ScoreRepository(context: Context) {
         val query = """
             SELECT MAX(score)
             FROM scores
+            WHERE accuracy >= 0.9
         """.trimIndent()
 
         val cursor = db?.rawQuery(query, arrayOf())
@@ -122,6 +125,80 @@ class ScoreRepository(context: Context) {
         cursor?.close()
 
         return score ?: 0
+    }
+
+    fun getHighScores(): List<Pair<String, Float>> {
+        val db = dbHelper.readableDatabase
+
+        val query = """
+            WITH daily AS (
+                SELECT
+                    date(completed_at, 'unixepoch') AS day,
+                    MAX(score) AS score,
+                    accuracy
+                FROM scores
+                WHERE accuracy >= 0.9
+                GROUP BY day
+            ),
+            ordered AS (
+                SELECT
+                    day,
+                    score,
+                    ROW_NUMBER() OVER (ORDER BY day) AS rn
+                FROM daily
+            ),
+            highscores AS (
+                SELECT
+                    rn,
+                    day,
+                    score,
+                    score AS highscore
+                FROM ordered
+                WHERE rn = 1
+
+                UNION ALL
+
+                SELECT
+                    o.rn,
+                    o.day,
+                    o.score,
+                    MAX(h.highscore, o.score) AS highscore
+                FROM highscores h
+                JOIN ordered o
+                  ON o.rn = h.rn + 1
+            ),
+            bounds AS (
+                SELECT MIN(day) AS min_day, MAX(day) AS max_day FROM highscores
+            ),
+            calendar(day) AS (
+                SELECT min_day FROM bounds
+                UNION ALL
+                SELECT date(day, '+1 day') FROM calendar, bounds WHERE day < bounds.max_day
+            ),
+            calendar_values AS (
+                SELECT c.day,
+                       hs.highscore
+                FROM calendar c
+                LEFT JOIN highscores hs ON hs.day = c.day
+            )
+            SELECT day,
+                   COALESCE(highscore,
+                        MAX(highscore) OVER (ORDER BY day
+                                      ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING)
+                   ) AS filled_highscore
+            FROM calendar_values
+        """.trimIndent()
+
+        val highScores = mutableListOf<Pair<String, Float>>()
+        val cursor = db?.rawQuery(query, arrayOf())
+        while (cursor?.moveToNext() == true) {
+            val date = cursor.getString(0)
+            val highScore = cursor.getInt(1)
+            highScores.add(Pair(date, highScore.toFloat()))
+        }
+        cursor?.close()
+
+        return highScores.toList()
     }
 
 }

@@ -1,9 +1,11 @@
 package com.waspbyte.piapp
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import com.db.williamchart.view.DonutChartView
+import com.db.williamchart.view.LineChartView
 
 class StatsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +30,19 @@ class StatsActivity : AppCompatActivity() {
         bestStreakDcv.donutColors = intArrayOf(
             colorPrimary
         )
-        val ratio = currentStreak.toFloat() / bestStreak.toFloat() * 100f
+        var ratio = 0.0f
+        if (bestStreak != 0)
+            ratio = currentStreak.toFloat() / bestStreak.toFloat() * 100f
         bestStreakDcv.animate(listOf(ratio))
         bestStreakDcv.animation.duration = 5000L
+
+        val highScoreChart = findViewById<LineChartView>(R.id.highscore_lcv)
+        highScoreChart.gradientFillColors =
+            intArrayOf(
+                colorTertiary,
+                Color.TRANSPARENT
+            )
+        highScoreChart.animation.duration = 5000L
+        highScoreChart.animate(scoreRepository.getHighScores())
     }
 }
