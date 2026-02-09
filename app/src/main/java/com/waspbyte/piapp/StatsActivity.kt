@@ -6,8 +6,11 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.db.williamchart.data.Scale
 import com.db.williamchart.view.DonutChartView
 import com.db.williamchart.view.LineChartView
 
@@ -31,6 +34,10 @@ class StatsActivity : AppCompatActivity() {
         val currentStreak = scoreRepository.getCurrentStreak()
         val bestStreak = scoreRepository.getBestStreak()
 
+        findViewById<Button>(R.id.back_btn).setOnClickListener {
+            finish()
+        }
+
         val bestStreakDcv = findViewById<DonutChartView>(R.id.best_streak_dcv)
         bestStreakDcv.donutColors = intArrayOf(
             colorPrimary
@@ -39,7 +46,10 @@ class StatsActivity : AppCompatActivity() {
         if (bestStreak != 0)
             ratio = currentStreak.toFloat() / bestStreak.toFloat() * 100f
         bestStreakDcv.animate(listOf(ratio))
-        bestStreakDcv.animation.duration = 5000L
+        bestStreakDcv.animation.duration = 1000L
+
+        val currentStreakTv = findViewById<TextView>(R.id.streak_tv)
+        currentStreakTv.text = currentStreak.toString()
 
         val highScoreChart = findViewById<LineChartView>(R.id.highscore_lcv)
         highScoreChart.gradientFillColors =
@@ -47,7 +57,7 @@ class StatsActivity : AppCompatActivity() {
                 colorTertiary,
                 Color.TRANSPARENT
             )
-        highScoreChart.animation.duration = 5000L
+        highScoreChart.animation.duration = 1000L
 
         val highScoreRangesS = findViewById<Spinner>(R.id.highscore_ranges_s)
         val highScoreRangesAdapter = ArrayAdapter.createFromResource(
@@ -71,7 +81,9 @@ class StatsActivity : AppCompatActivity() {
                     getString(R.string.week) -> System.currentTimeMillis() / 1000L - 60 * 60 * 24 * 7
                     else -> throw NoWhenBranchMatchedException()
                 }
-                highScoreChart.animate(scoreRepository.getHighScores(fromDate))
+                val highScores = scoreRepository.getHighScores(fromDate)
+                highScoreChart.scale = Scale(0f, highScores.last().second * 1.2f)
+                highScoreChart.animate(highScores)
             }
 
             override fun onNothingSelected(arg0: AdapterView<*>?) {
