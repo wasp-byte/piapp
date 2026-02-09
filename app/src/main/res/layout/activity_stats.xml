@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp">
 
     <com.db.williamchart.view.DonutChartView
         android:id="@+id/best_streak_dcv"
@@ -18,6 +19,23 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/highscore_lcv" />
+
+    <TextView
+        android:id="@+id/highscore_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/highscore_history"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/highscore_lcv"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Spinner
+        android:id="@+id/highscore_ranges_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/highscore_tv"
+        app:layout_constraintBottom_toBottomOf="@id/highscore_tv"
+        app:layout_constraintTop_toTopOf="@id/highscore_tv"/>
 
     <com.db.williamchart.view.LineChartView
         android:id="@+id/highscore_lcv"

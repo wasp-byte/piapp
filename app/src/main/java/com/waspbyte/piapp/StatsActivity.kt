@@ -3,9 +3,14 @@ package com.waspbyte.piapp
 import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.db.williamchart.view.DonutChartView
 import com.db.williamchart.view.LineChartView
+
 
 class StatsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +48,34 @@ class StatsActivity : AppCompatActivity() {
                 Color.TRANSPARENT
             )
         highScoreChart.animation.duration = 5000L
-        highScoreChart.animate(scoreRepository.getHighScores())
+
+        val highScoreRangesS = findViewById<Spinner>(R.id.highscore_ranges_s)
+        val highScoreRangesAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.highscore_ranges,
+            android.R.layout.simple_spinner_item
+        )
+        highScoreRangesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        highScoreRangesS.adapter = highScoreRangesAdapter
+        highScoreRangesS.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                arg0: AdapterView<*>?,
+                arg1: View?,
+                position: Int,
+                id: Long
+            ) {
+                val fromDate = when (highScoreRangesAdapter.getItem(position)) {
+                    getString(R.string.all) -> 0
+                    getString(R.string.year) -> System.currentTimeMillis() / 1000L - 60 * 60 * 24 * 365
+                    getString(R.string.month) -> System.currentTimeMillis() / 1000L - 60 * 60 * 24 * 30
+                    getString(R.string.week) -> System.currentTimeMillis() / 1000L - 60 * 60 * 24 * 7
+                    else -> throw NoWhenBranchMatchedException()
+                }
+                highScoreChart.animate(scoreRepository.getHighScores(fromDate))
+            }
+
+            override fun onNothingSelected(arg0: AdapterView<*>?) {
+            }
+        }
     }
 }

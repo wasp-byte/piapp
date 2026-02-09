@@ -127,7 +127,7 @@ class ScoreRepository(context: Context) {
         return score ?: 0
     }
 
-    fun getHighScores(): List<Pair<String, Float>> {
+    fun getHighScores(fromDate: Long): List<Pair<String, Float>> {
         val db = dbHelper.readableDatabase
 
         val query = """
@@ -180,13 +180,16 @@ class ScoreRepository(context: Context) {
                        hs.highscore
                 FROM calendar c
                 LEFT JOIN highscores hs ON hs.day = c.day
-            )
-            SELECT day,
+            ),
+            result AS (SELECT day,
                    COALESCE(highscore,
                         MAX(highscore) OVER (ORDER BY day
                                       ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING)
                    ) AS filled_highscore
             FROM calendar_values
+            )
+            SELECT * FROM result
+            WHERE day > date($fromDate, 'unixepoch')
         """.trimIndent()
 
         val highScores = mutableListOf<Pair<String, Float>>()
