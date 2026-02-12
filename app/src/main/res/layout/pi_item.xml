@@ -11,6 +11,7 @@
     android:gravity="end"
     android:text="0"
     android:textColor="?attr/colorTertiaryFixedDim"
+    android:fontFamily="@font/overpass_mono_regular"
     android:alpha="0.8"
     android:textSize="16sp" />
 
@@ -20,6 +21,7 @@
     android:layout_weight="1"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:fontFamily="@font/overpass_mono_regular"
     android:textColor="?attr/colorPrimary"
     android:textSize="40sp" />
 

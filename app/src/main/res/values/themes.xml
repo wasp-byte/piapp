@@ -48,7 +48,9 @@
         <item name="colorSurfaceContainerHigh">@color/theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/theme_surfaceContainerHighest</item>
         <item name="android:windowActivityTransitions">true</item>
+        <item name="android:fontFamily">@font/ysabeauinfant</item>
     </style>
 
     <style name="Theme.Piapp" parent="Base.Theme.Piapp" />
+
 </resources>
