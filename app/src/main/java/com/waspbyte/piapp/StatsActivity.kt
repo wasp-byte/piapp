@@ -83,6 +83,12 @@ class StatsActivity : AppCompatActivity() {
                     else -> throw NoWhenBranchMatchedException()
                 }
                 val highScores = scoreRepository.getHighScores(fromDate)
+                if (highScores.size < 2) {
+                    highScoreChart.visibility = View.GONE
+                    findViewById<TextView>(R.id.highscore_tv).visibility = View.GONE
+                    highScoreRangesS.visibility = View.GONE
+                    return
+                }
                 highScoreChart.scale = Scale(0f, (highScores.lastOrNull()?.second ?: 1.0f) * 1.2f)
                 highScoreChart.animate(highScores)
             }
