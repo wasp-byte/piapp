@@ -274,6 +274,7 @@ fun HeatmapSection(
                                         .height(cellSize),
                                 text = dayNames[it.ordinal],
                                 style = MaterialTheme.typography.labelSmall,
+                                color = colorResource(R.color.theme_onSurface)
                             )
                         } else {
                             Box(
@@ -312,6 +313,7 @@ fun HeatmapSection(
                                         modifier = Modifier.height(cellSize),
                                         text = monthName,
                                         style = MaterialTheme.typography.labelSmall,
+                                        color = colorResource(R.color.theme_onSurface)
                                     )
                                 } else {
                                     Spacer(modifier = Modifier.size(cellSize))
