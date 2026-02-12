@@ -83,7 +83,7 @@
         app:chart_lineColor="?attr/colorTertiary"
         app:chart_lineThickness="3dp"
         app:chart_smoothLine="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/heatmap_cv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/best_streak_dcv" />

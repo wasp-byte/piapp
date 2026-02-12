@@ -93,7 +93,7 @@ class StatsActivity : AppCompatActivity() {
 
         val heatMapView = findViewById<ComposeView>(R.id.heatmap_cv)
         heatMapView.setContent {
-            HeatmapSection(DayOfWeek.MONDAY, emptyMap())
+            HeatmapSection(DayOfWeek.MONDAY, scoreRepository.getHeatmap())
         }
     }
 }

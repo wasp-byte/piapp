@@ -2,6 +2,7 @@ package com.waspbyte.piapp
 
 import android.content.ContentValues
 import android.content.Context
+import kotlinx.datetime.LocalDate
 
 class ScoreRepository(context: Context) {
     private var dbHelper: DBHelper = DBHelper(context)
@@ -204,4 +205,34 @@ class ScoreRepository(context: Context) {
         return highScores.toList()
     }
 
+    fun getHeatmap(): HeatmapData {
+        val db = dbHelper.readableDatabase
+
+        val query = """
+            SELECT date(completed_at, 'unixepoch') AS day, completed_at, COUNT(*) AS cnt
+            FROM scores
+            GROUP BY day
+            ORDER BY day;
+        """.trimIndent()
+
+        val heatmapData = mutableMapOf<LocalDate, Float>()
+
+        val cursor = db?.rawQuery(query, arrayOf())
+        while (cursor?.moveToNext() == true) {
+            val date = cursor.getLong(1)
+            val count = cursor.getInt(2)
+            heatmapData[LocalDate.fromEpochDays(date/60/60/24)] = when (count) {
+                in 5..Integer.MAX_VALUE -> 1.0f
+                4 -> 0.8f
+                3 -> 0.6f
+                2 -> 0.5f
+                1 -> 0.3f
+                0 -> 0.0f
+                else -> 0.0f
+            }
+        }
+        cursor?.close()
+
+        return heatmapData
+    }
 }
