@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <Button
         android:id="@+id/back_btn"
@@ -24,10 +24,10 @@
         app:chart_donutRoundCorners="true"
         app:chart_donutThickness="15dp"
         app:chart_donutTotal="100"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/highscore_lcv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/highscore_lcv" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/streak_tv"
@@ -35,10 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:textSize="50sp"
-        app:layout_constraintTop_toTopOf="@+id/best_streak_dcv"
         app:layout_constraintBottom_toBottomOf="@id/best_streak_dcv"
+        app:layout_constraintLeft_toLeftOf="@id/best_streak_dcv"
         app:layout_constraintRight_toLeftOf="@id/fire_iv"
-        app:layout_constraintLeft_toLeftOf="@id/best_streak_dcv"/>
+        app:layout_constraintTop_toTopOf="@+id/best_streak_dcv" />
 
     <ImageView
         android:id="@+id/fire_iv"
@@ -46,11 +46,11 @@
         android:layout_height="50dp"
         android:layout_marginEnd="40dp"
         android:src="@drawable/streak"
-        app:tint="?attr/colorTertiary"
-        app:layout_constraintTop_toTopOf="@+id/streak_tv"
         app:layout_constraintBottom_toBottomOf="@id/streak_tv"
         app:layout_constraintLeft_toRightOf="@+id/streak_tv"
-        app:layout_constraintRight_toRightOf="@id/best_streak_dcv"/>
+        app:layout_constraintRight_toRightOf="@id/best_streak_dcv"
+        app:layout_constraintTop_toTopOf="@+id/streak_tv"
+        app:tint="?attr/colorTertiary" />
 
 
     <TextView
@@ -66,9 +66,9 @@
         android:id="@+id/highscore_ranges_s"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/highscore_tv"
         app:layout_constraintBottom_toBottomOf="@id/highscore_tv"
-        app:layout_constraintTop_toTopOf="@id/highscore_tv"/>
+        app:layout_constraintLeft_toRightOf="@id/highscore_tv"
+        app:layout_constraintTop_toTopOf="@id/highscore_tv" />
 
     <com.db.williamchart.view.LineChartView
         android:id="@+id/highscore_lcv"
@@ -87,5 +87,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/best_streak_dcv" />
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/heatmap_cv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highscore_lcv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

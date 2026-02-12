@@ -10,10 +10,11 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.platform.ComposeView
 import com.db.williamchart.data.Scale
 import com.db.williamchart.view.DonutChartView
 import com.db.williamchart.view.LineChartView
-
+import kotlinx.datetime.DayOfWeek
 
 class StatsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +89,11 @@ class StatsActivity : AppCompatActivity() {
 
             override fun onNothingSelected(arg0: AdapterView<*>?) {
             }
+        }
+
+        val heatMapView = findViewById<ComposeView>(R.id.heatmap_cv)
+        heatMapView.setContent {
+            HeatmapSection(DayOfWeek.MONDAY, emptyMap())
         }
     }
 }
