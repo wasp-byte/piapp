@@ -32,10 +32,14 @@ class ScoreRepository(context: Context) {
             ),
             ordered AS (
                 SELECT
-                    day,
-                    score,
-                    ROW_NUMBER() OVER (ORDER BY day) AS rn
-                FROM daily
+                    d1.day,
+                    d1.score,
+                    (
+                        SELECT COUNT(*)
+                        FROM daily d2
+                        WHERE d2.day <= d1.day
+                    ) AS rn
+                FROM daily d1
             ),
             streaks AS (
                 -- Base case: first day
