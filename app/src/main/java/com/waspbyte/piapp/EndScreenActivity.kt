@@ -19,16 +19,16 @@ class EndScreenActivity : AppCompatActivity() {
 
         val accuracyTv = findViewById<TextView>(R.id.accuracy_tv)
         val indexTv = findViewById<TextView>(R.id.index_tv)
-        val score = intent.getFloatExtra("SCORE", 1.0f)
-        val currentIndex = intent.getIntExtra("CURRENT_INDEX", 0) + 1
+        val accuracy = intent.getFloatExtra(getString(R.string.accuracy), 1.0f)
+        val currentIndex = intent.getIntExtra(getString(R.string.current_index), 0) + 1
 
         val scoreRepository = ScoreRepository(this)
         val previousStreak = scoreRepository.getCurrentStreak()
-        scoreRepository.saveAttempt(currentIndex, score)
+        scoreRepository.saveAttempt(currentIndex, accuracy)
         val currentStreak = scoreRepository.getCurrentStreak()
 
         indexTv.text = currentIndex.toString()
-        accuracyTv.text = "${"%.2f".format(score * 100f)}%"
+        accuracyTv.text = "${"%.2f".format(accuracy * 100f)}%"
 
         if (currentStreak > previousStreak) {
             val fireIv = findViewById<ImageView>(R.id.fire_iv)

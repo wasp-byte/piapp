@@ -16,4 +16,6 @@
         <item>@string/month</item>
         <item>@string/week</item>
     </string-array>
+    <string name="accuracy">ACCURACY</string>
+    <string name="current_index">CURRENT_INDEX</string>
 </resources>

@@ -49,8 +49,8 @@ class GameActivity : AppCompatActivity() {
 
     fun done(view: View) {
         val intent = Intent(this, EndScreenActivity::class.java)
-        intent.putExtra("SCORE", piManager.getScore())
-        intent.putExtra("CURRENT_INDEX", piManager.getCurrentIndex())
+        intent.putExtra(getString(R.string.accuracy), piManager.getScore())
+        intent.putExtra(getString(R.string.current_index), piManager.getCurrentIndex())
         startActivity(intent)
         finish()
     }
