@@ -146,11 +146,9 @@ class ScoreRepository(context: Context) {
                 GROUP BY day
             ),
             ordered AS (
-                SELECT
-                    day,
-                    score,
-                    ROW_NUMBER() OVER (ORDER BY day) AS rn
-                FROM daily
+              SELECT d.day, d.score,
+                (SELECT COUNT(*) FROM daily d2 WHERE d2.day <= d.day) AS rn
+              FROM daily d
             ),
             highscores AS (
                 SELECT
@@ -186,12 +184,18 @@ class ScoreRepository(context: Context) {
                 FROM calendar c
                 LEFT JOIN highscores hs ON hs.day = c.day
             ),
-            result AS (SELECT day,
-                   COALESCE(highscore,
-                        MAX(highscore) OVER (ORDER BY day
-                                      ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING)
-                   ) AS filled_highscore
-            FROM calendar_values
+            result AS (
+              SELECT
+                cv.day,
+                COALESCE(
+                  cv.highscore,
+                  (
+                    SELECT MAX(cv2.highscore)
+                    FROM calendar_values cv2
+                    WHERE cv2.day < cv.day
+                  )
+                ) AS filled_highscore
+              FROM calendar_values cv
             )
             SELECT * FROM result
             WHERE day > date($fromDate, 'unixepoch')
