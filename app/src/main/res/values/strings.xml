@@ -18,4 +18,5 @@
     </string-array>
     <string name="accuracy">ACCURACY</string>
     <string name="current_index">CURRENT_INDEX</string>
+    <string name="format_accuracy">%.2f%%</string>
 </resources>

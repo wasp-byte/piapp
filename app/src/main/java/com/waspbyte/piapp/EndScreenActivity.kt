@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class EndScreenActivity : AppCompatActivity() {
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_end_screen)
@@ -20,7 +19,7 @@ class EndScreenActivity : AppCompatActivity() {
         val accuracyTv = findViewById<TextView>(R.id.accuracy_tv)
         val indexTv = findViewById<TextView>(R.id.index_tv)
         val accuracy = intent.getFloatExtra(getString(R.string.accuracy), 1.0f)
-        val currentIndex = intent.getIntExtra(getString(R.string.current_index), 0) + 1
+        val currentIndex = intent.getIntExtra(getString(R.string.current_index), 1)
 
         val scoreRepository = ScoreRepository(this)
         val previousStreak = scoreRepository.getCurrentStreak()
@@ -28,7 +27,7 @@ class EndScreenActivity : AppCompatActivity() {
         val currentStreak = scoreRepository.getCurrentStreak()
 
         indexTv.text = currentIndex.toString()
-        accuracyTv.text = "${"%.2f".format(accuracy * 100f)}%"
+        accuracyTv.text = getString(R.string.format_accuracy).format(accuracy * 100f)
 
         if (currentStreak > previousStreak) {
             val fireIv = findViewById<ImageView>(R.id.fire_iv)
