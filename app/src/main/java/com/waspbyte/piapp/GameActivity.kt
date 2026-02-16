@@ -37,7 +37,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun addText(view: View) {
-        piManager.next((view as Button).text[0], digitsTv, maxTextWidth)
+        piManager.next((view as Button).text[0], digitsTv.paint, maxTextWidth)
         piManager.check(view.text[0])
         formatText()
     }

@@ -2,7 +2,7 @@ package com.waspbyte.piapp
 
 import android.content.Context
 import android.graphics.Color
-import android.widget.TextView
+import android.text.TextPaint
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.math.min
@@ -26,7 +26,7 @@ class PiManager(context: Context) {
 
     fun piWithDot() = "${PI.slice(0..<DOT)}.${PI.slice(DOT..<PI.length)}"
 
-    fun next(c: Char, textView: TextView, maxTextWidth: Int): Char? {
+    fun next(c: Char, paint: TextPaint, maxTextWidth: Int): Char? {
         currentIndex++
         if (wrongAttempts.size <= currentIndex) {
             wrongAttempts.add(0)
@@ -34,7 +34,7 @@ class PiManager(context: Context) {
         }
 
         currentText.append(c)
-        val paint = textView.paint
+
         while (paint.measureText(getText()) > maxTextWidth && visibleIndex <= currentIndex) {
             visibleIndex++
         }
@@ -42,12 +42,13 @@ class PiManager(context: Context) {
         return PI[currentIndex]
     }
 
-    fun check(answer: Char) {
+    fun check(answer: Char): Boolean {
         val correct = answer == PI[currentIndex]
         if (!correct) {
             wrongAttempts[currentIndex]++
         }
         isCorrect[currentIndex] = correct
+        return correct
     }
 
     fun back() {
