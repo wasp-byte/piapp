@@ -7,11 +7,15 @@ import kotlinx.datetime.LocalDate
 class ScoreRepository(context: Context) {
     private var dbHelper: DBHelper = DBHelper(context)
 
-    fun saveAttempt(score: Int, accuracy: Float) {
+    fun close() {
+        dbHelper.close()
+    }
+
+    fun saveAttempt(score: Int, accuracy: Float, completedAt: Long = System.currentTimeMillis() / 1000L) {
         val db = dbHelper.writableDatabase
 
         val values = ContentValues().apply {
-            put(DBHelper.ScoresEntry.COLUMN_NAME_COMPLETED_AT, System.currentTimeMillis() / 1000L)
+            put(DBHelper.ScoresEntry.COLUMN_NAME_COMPLETED_AT, completedAt)
             put(DBHelper.ScoresEntry.COLUMN_NAME_SCORE, score)
             put(DBHelper.ScoresEntry.COLUMN_NAME_ACCURACY, accuracy)
         }
@@ -19,8 +23,7 @@ class ScoreRepository(context: Context) {
         db?.insert(DBHelper.ScoresEntry.TABLE_NAME, null, values)
     }
 
-
-    private val streak_query = """
+    private val streakQuery = """
             WITH daily AS (
                 SELECT
                     date(completed_at, 'unixepoch') AS day,
@@ -91,7 +94,7 @@ class ScoreRepository(context: Context) {
             LIMIT 1
         """.trimIndent()
 
-        cursor = db?.rawQuery("$streak_query\n$querySuffix", arrayOf())
+        cursor = db?.rawQuery("$streakQuery\n$querySuffix", arrayOf())
         cursor?.moveToFirst()
         val streak = cursor?.getInt(0)
         cursor?.close()
@@ -107,7 +110,7 @@ class ScoreRepository(context: Context) {
             FROM streaks
         """.trimIndent()
 
-        val cursor = db?.rawQuery("$streak_query\n$querySuffix", arrayOf())
+        val cursor = db?.rawQuery("$streakQuery\n$querySuffix", arrayOf())
         cursor?.moveToFirst()
         val streak = cursor?.getInt(0)
         cursor?.close()
