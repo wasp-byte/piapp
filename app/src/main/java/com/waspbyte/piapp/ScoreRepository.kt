@@ -96,10 +96,13 @@ class ScoreRepository(context: Context) {
 
         cursor = db?.rawQuery("$streakQuery\n$querySuffix", arrayOf())
         cursor?.moveToFirst()
-        val streak = cursor?.getInt(0)
+        var streak = 0
+        if (cursor?.moveToFirst() == true) {
+            streak = cursor.getInt(0)
+        }
         cursor?.close()
 
-        return streak ?: 0
+        return streak
     }
 
     fun getBestStreak(): Int {

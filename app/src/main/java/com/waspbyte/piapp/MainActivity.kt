@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                 span.setSpan(
                     ForegroundColorSpan(colorLearned),
                     0,
-                    min(index - i * charsPerLine, if (i != 0) i * charsPerLine else charsPerLine),
+                    min(index - i * charsPerLine, charsPerLine),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 if (index + 1 <= (i + 1) * charsPerLine) {
@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                 span.setSpan(
                     ForegroundColorSpan(colorLearned), 0, min(
                         indexNew - currentIndex * charsPerLine,
-                        if (currentIndex != 0) currentIndex * charsPerLine else charsPerLine
+                        charsPerLine
                     ), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 if (indexNew + 1 <= (currentIndex + 1) * charsPerLine) {

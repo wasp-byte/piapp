@@ -1,6 +1,5 @@
 package com.waspbyte.piapp
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Animatable2
 import android.graphics.drawable.Drawable
@@ -12,6 +11,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class EndScreenActivity : AppCompatActivity() {
+    private lateinit var scoreRepository: ScoreRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_end_screen)
@@ -21,7 +22,7 @@ class EndScreenActivity : AppCompatActivity() {
         val accuracy = intent.getFloatExtra(getString(R.string.accuracy), 1.0f)
         val currentIndex = intent.getIntExtra(getString(R.string.current_index), 1)
 
-        val scoreRepository = ScoreRepository(this)
+        scoreRepository = ScoreRepository(this)
         val previousStreak = scoreRepository.getCurrentStreak()
         scoreRepository.saveAttempt(currentIndex, accuracy)
         val currentStreak = scoreRepository.getCurrentStreak()
@@ -50,5 +51,10 @@ class EndScreenActivity : AppCompatActivity() {
             startActivity(Intent(this, GameActivity::class.java))
             finish()
         }
+    }
+
+    override fun onDestroy() {
+        scoreRepository.close()
+        super.onDestroy()
     }
 }

@@ -17,6 +17,8 @@ import com.db.williamchart.view.LineChartView
 import kotlinx.datetime.DayOfWeek
 
 class StatsActivity : AppCompatActivity() {
+    private lateinit var scoreRepository: ScoreRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stats)
@@ -31,7 +33,7 @@ class StatsActivity : AppCompatActivity() {
         )
         val colorTertiary = typedValue.data
 
-        val scoreRepository = ScoreRepository(this)
+        scoreRepository = ScoreRepository(this)
         val currentStreak = scoreRepository.getCurrentStreak()
         val bestStreak = scoreRepository.getBestStreak()
 
@@ -101,5 +103,10 @@ class StatsActivity : AppCompatActivity() {
         heatMapView.setContent {
             HeatmapSection(DayOfWeek.MONDAY, scoreRepository.getHeatmap())
         }
+    }
+
+    override fun onDestroy() {
+        scoreRepository.close()
+        super.onDestroy()
     }
 }
