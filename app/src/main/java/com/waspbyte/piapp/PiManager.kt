@@ -60,7 +60,7 @@ class PiManager(context: Context) {
     }
 
     fun getScore(): Float {
-        val initialPoints = (currentIndex + 1) * 5
+        val initialPoints = wrongAttempts.size * 5
         var points = initialPoints
 
         for ((correct, attempts) in isCorrect.zip(wrongAttempts)) {
