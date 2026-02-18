@@ -73,9 +73,12 @@ class EndScreenTest {
 
     @Test
     fun checkScoreRepository() {
-        val scoreRepositoryCurrentStreak = scoreRepository.getCurrentStreak()
+        val (scoreRepositoryCurrentStreak, scoreRepositoryActiveStreak) = scoreRepository.getCurrentStreak()
         assertEquals(
             1, scoreRepositoryCurrentStreak
+        )
+        assertEquals(
+            true, scoreRepositoryActiveStreak
         )
         val scoreRepositoryCurrentIndex = scoreRepository.getCurrentIndex()
         assertEquals(

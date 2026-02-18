@@ -76,7 +76,7 @@ class StatsTest {
 
     @Test
     fun checkStreakTv() {
-        onView(withId(R.id.streak_tv)).check(matches(withText(scoreRepository.getCurrentStreak().toString())))
+        onView(withId(R.id.streak_tv)).check(matches(withText(scoreRepository.getCurrentStreak().first.toString())))
     }
 
     @Test
