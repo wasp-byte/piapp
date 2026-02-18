@@ -23,14 +23,16 @@ class EndScreenActivity : AppCompatActivity() {
         val currentIndex = intent.getIntExtra(getString(R.string.current_index), 1)
 
         scoreRepository = ScoreRepository(this)
-        val previousStreak = scoreRepository.getCurrentStreak()
+        val (previousStreak, _) = scoreRepository.getCurrentStreak()
+        println(previousStreak)
         scoreRepository.saveAttempt(currentIndex, accuracy)
-        val currentStreak = scoreRepository.getCurrentStreak()
+        val (currentStreak, _) = scoreRepository.getCurrentStreak()
+        println(currentStreak)
 
         indexTv.text = currentIndex.toString()
         accuracyTv.text = getString(R.string.format_accuracy).format(accuracy * 100f)
 
-        if (currentStreak > previousStreak) {
+        if (currentStreak - previousStreak == 1) {
             val fireIv = findViewById<ImageView>(R.id.fire_iv)
             fireIv.visibility = View.VISIBLE
             val animatableVector = (fireIv.drawable as Animatable2)

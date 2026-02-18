@@ -78,23 +78,24 @@ class ScoreRepository(context: Context) {
             )
         """.trimIndent()
 
-    fun getCurrentStreak(): Int {
+    fun getCurrentStreak(): Pair<Int, Boolean>  {
         val db = dbHelper.readableDatabase
         var cursor = db?.rawQuery("SELECT 1 from scores WHERE date(completed_at, 'unixepoch') = date(?, 'unixepoch')", arrayOf("${System.currentTimeMillis() / 1000L}"))
-        if (!(cursor?.moveToFirst() ?: false)) {
-            cursor?.close()
-            return 0
+        var activeStreak = false
+        if (cursor?.moveToFirst() == true) {
+            activeStreak = true
         }
-        cursor.close()
+        cursor?.close()
 
-        val querySuffix = """
+        var querySuffix = """
             SELECT streak AS current_streak
             FROM streaks
+            WHERE day == date(?, 'unixepoch')
             ORDER BY rn DESC
             LIMIT 1
         """.trimIndent()
 
-        cursor = db?.rawQuery("$streakQuery\n$querySuffix", arrayOf())
+        cursor = db?.rawQuery("$streakQuery\n$querySuffix", arrayOf("${System.currentTimeMillis() / 1000L}"))
         cursor?.moveToFirst()
         var streak = 0
         if (cursor?.moveToFirst() == true) {
@@ -102,7 +103,18 @@ class ScoreRepository(context: Context) {
         }
         cursor?.close()
 
-        return streak
+        if (streak == 0) {
+            cursor = db?.rawQuery("$streakQuery\n$querySuffix", arrayOf("${System.currentTimeMillis() / 1000L - 60 * 60 * 24}"))
+            cursor?.moveToFirst()
+            streak = 0
+            if (cursor?.moveToFirst() == true) {
+                streak = cursor.getInt(0)
+            }
+            activeStreak = false
+            cursor?.close()
+        }
+
+        return Pair(streak, activeStreak)
     }
 
     fun getBestStreak(): Int {

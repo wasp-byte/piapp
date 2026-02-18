@@ -50,7 +50,7 @@
         app:layout_constraintLeft_toRightOf="@+id/streak_tv"
         app:layout_constraintRight_toRightOf="@id/best_streak_dcv"
         app:layout_constraintTop_toTopOf="@+id/streak_tv"
-        app:tint="?attr/colorTertiary" />
+        app:tint="?attr/colorOnSurfaceVariant" />
 
 
     <TextView

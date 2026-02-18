@@ -97,8 +97,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         streakBtn = findViewById<MaterialButton>(R.id.streak_btn)
-        val streak = scoreRepository.getCurrentStreak()
-        if (streak > 0) {
+        val (streak, activeStreak) = scoreRepository.getCurrentStreak()
+        if (activeStreak) {
             streakBtn.setIconTintResource(R.color.theme_secondary)
         }
         streakBtn.text = streak.toString()
@@ -113,8 +113,8 @@ class MainActivity : AppCompatActivity() {
         val highscoreTv = findViewById<TextView>(R.id.highscore_tv)
         highscoreTv.text = index.toString()
         piAdapter.updateIndex(index + if (index >= piManager.DOT) 1 else 0)
-        val streak = scoreRepository.getCurrentStreak()
-        if (streak > 0) {
+        val (streak, activeStreak) = scoreRepository.getCurrentStreak()
+        if (activeStreak) {
             streakBtn.setIconTintResource(R.color.theme_secondary)
         }
         streakBtn.text = streak.toString()

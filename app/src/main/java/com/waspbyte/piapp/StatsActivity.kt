@@ -1,5 +1,6 @@
 package com.waspbyte.piapp
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -34,7 +36,7 @@ class StatsActivity : AppCompatActivity() {
         val colorTertiary = typedValue.data
 
         scoreRepository = ScoreRepository(this)
-        val currentStreak = scoreRepository.getCurrentStreak()
+        val (currentStreak, activeStreak) = scoreRepository.getCurrentStreak()
         val bestStreak = scoreRepository.getBestStreak()
 
         findViewById<Button>(R.id.back_btn).setOnClickListener {
@@ -53,6 +55,10 @@ class StatsActivity : AppCompatActivity() {
 
         val currentStreakTv = findViewById<TextView>(R.id.streak_tv)
         currentStreakTv.text = currentStreak.toString()
+
+        val fireIv = findViewById<ImageView>(R.id.fire_iv)
+        if (activeStreak)
+            fireIv.imageTintList = ColorStateList.valueOf(colorTertiary)
 
         val highScoreChart = findViewById<LineChartView>(R.id.highscore_lcv)
         highScoreChart.gradientFillColors =
