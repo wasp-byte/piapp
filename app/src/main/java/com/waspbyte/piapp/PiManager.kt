@@ -8,7 +8,6 @@ import java.io.InputStreamReader
 import kotlin.math.min
 
 class PiManager(context: Context) {
-
     var PI: String
 
     init {

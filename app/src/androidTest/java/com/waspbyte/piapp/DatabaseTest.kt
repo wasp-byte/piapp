@@ -15,13 +15,13 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class DBHelperTest {
-
     private lateinit var dbHelper: DBHelper
     private lateinit var db: SQLiteDatabase
+    private lateinit var context: Context
 
     @Before
     fun setup() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        context = ApplicationProvider.getApplicationContext<Context>()
         context.deleteDatabase(DBHelper.DATABASE_NAME)
         dbHelper = DBHelper(context)
         db = dbHelper.writableDatabase
@@ -31,6 +31,7 @@ class DBHelperTest {
     fun tearDown() {
         db.close()
         dbHelper.close()
+        context.deleteDatabase(DBHelper.DATABASE_NAME)
     }
 
     @Test

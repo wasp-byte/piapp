@@ -11,5 +11,6 @@
         <item name="android:layout_columnWeight">1</item>
         <item name="android:layout_rowWeight">1</item>
         <item name="shapeAppearance">@style/ShapeAppearanceOverlay.Material3.FloatingActionButton</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 </resources>
