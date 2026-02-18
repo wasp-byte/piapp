@@ -22,29 +22,29 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class StatsEmptyTest {
-
     private lateinit var scenario: ActivityScenario<StatsActivity>
-    private lateinit var scoreRepository: ScoreRepository
     private lateinit var context: Context
 
     @Before
     fun setUp() {
         Intents.init()
         context = ApplicationProvider.getApplicationContext()
+        context.deleteDatabase(DBHelper.DATABASE_NAME)
         val intent = Intent(context, StatsActivity::class.java)
 
         scenario = launch(intent)
-        scoreRepository = ScoreRepository(context)
     }
 
     @After
     fun cleanUp() {
         Intents.release()
+        scenario.close()
+        context.deleteDatabase(DBHelper.DATABASE_NAME)
     }
 
     @Test
     fun checkOpen_StatsActivity() {
-        intended(hasComponent(StatsActivity::class.java.getName()))
+        intended(hasComponent(StatsActivity::class.java.name))
     }
 
     @Test

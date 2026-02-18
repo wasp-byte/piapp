@@ -57,6 +57,7 @@ class StatsTest {
     @After
     fun cleanUp() {
         Intents.release()
+        scenario.close()
         context.deleteDatabase(DBHelper.DATABASE_NAME)
     }
 

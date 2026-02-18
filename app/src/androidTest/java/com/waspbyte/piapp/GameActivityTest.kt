@@ -1,7 +1,6 @@
 package com.waspbyte.piapp
 
 import android.content.Context
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
@@ -13,15 +12,27 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class GameActivityTest {
+    private lateinit var scenario: ActivityScenario<GameActivity>
+
+    @Before
+    fun setup() {
+        scenario = ActivityScenario.launch(GameActivity::class.java)
+    }
+
+    @After
+    fun teardown() {
+        scenario.close()
+    }
+
     @Test
     fun addText_updatesTextView() {
-        val scenario = ActivityScenario.launch(GameActivity::class.java)
-
         scenario.onActivity { activity ->
             val button = Button(activity).apply {
                 text = "3"
@@ -36,8 +47,6 @@ class GameActivityTest {
 
     @Test
     fun delete_removesLastDigit() {
-        val scenario = ActivityScenario.launch(GameActivity::class.java)
-
         scenario.onActivity { activity ->
             val button = Button(activity).apply { text = "3" }
             activity.addText(button)
@@ -53,8 +62,6 @@ class GameActivityTest {
     fun done_startsEndScreenActivity_withExtras() {
         Intents.init()
 
-        val scenario = ActivityScenario.launch(GameActivity::class.java)
-
         scenario.onActivity { activity ->
             activity.done()
         }
@@ -68,8 +75,6 @@ class GameActivityTest {
 
     @Test
     fun multipleDigits_renderCorrectLength() {
-        val scenario = ActivityScenario.launch(GameActivity::class.java)
-
         scenario.onActivity { activity ->
             val btn = Button(activity)
 

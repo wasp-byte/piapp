@@ -62,6 +62,7 @@ class ScoreRepositoryTest {
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         scoreRepository = ScoreRepository(context)
+        context.deleteDatabase(DBHelper.DATABASE_NAME)
         for (attempt in attempts) {
             scoreRepository.saveAttempt(
                 attempt.score, attempt.accuracy, attempt.epoch
@@ -70,7 +71,8 @@ class ScoreRepositoryTest {
     }
 
     @After
-    fun cleanUp() {
+    fun teardown() {
+        scoreRepository.close()
         context.deleteDatabase(DBHelper.DATABASE_NAME)
     }
 

@@ -34,6 +34,7 @@ class EndScreenTest {
     fun setUp() {
         Intents.init()
         context = ApplicationProvider.getApplicationContext()
+        context.deleteDatabase(DBHelper.DATABASE_NAME)
         val intent = Intent(context, EndScreenActivity::class.java).apply {
             putExtra(context.getString(R.string.accuracy), accuracy)
             putExtra(context.getString(R.string.current_index), currentIndex)
@@ -46,6 +47,9 @@ class EndScreenTest {
     @After
     fun cleanUp() {
         Intents.release()
+        scenario.close()
+        scoreRepository.close()
+        context.deleteDatabase(DBHelper.DATABASE_NAME)
     }
 
     @Test
