@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
     class PiAdapter(
         private val text: String,
-        private val index: Int,
+        private var index: Int,
         private val colorLearned: Int,
         private val colorNew: Int,
         private val charsPerLine: Int
@@ -150,6 +150,7 @@ class MainActivity : AppCompatActivity() {
 
         fun updateIndex(indexNew: Int) {
             if (indexNew == index) return
+            index = indexNew
             val dataSetIndex = index / charsPerLine
             for (i in 0..(indexNew / charsPerLine) - dataSetIndex) {
                 val currentIndex = dataSetIndex + i
