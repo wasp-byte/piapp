@@ -2,13 +2,15 @@ package com.waspbyte.piapp
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +29,7 @@ class PiManagerTest {
 
     @Test
     fun checkDot() {
-        assert(piManager.piWithDot()[1] == '.')
+        assertEquals('.', piManager.piWithDot()[1])
     }
 
     @Test
@@ -35,8 +37,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -45,17 +46,17 @@ class PiManagerTest {
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         )
         piManager.next('3', textView.paint, 1000)
-        assert(piManager.getCurrentIndex() == 0)
-        assert(piManager.check('3'))
-        assert(piManager.getText() == "3.")
+        assertEquals(0, piManager.getCurrentIndex())
+        assertTrue(piManager.check('3'))
+        assertEquals("3.", piManager.getText())
         piManager.next('1', textView.paint, 1000)
-        assert(piManager.getCurrentIndex() == 1)
-        assert(piManager.check('1'))
-        assert(piManager.getText() == "3.1")
+        assertEquals(1, piManager.getCurrentIndex())
+        assertTrue(piManager.check('1'))
+        assertEquals("3.1", piManager.getText())
         piManager.next('2', textView.paint, 1000)
-        assert(piManager.getCurrentIndex() == 2)
-        assert(!piManager.check('2'))
-        assert(piManager.getText() == "3.12")
+        assertEquals(2, piManager.getCurrentIndex())
+        assertFalse(piManager.check('2'))
+        assertEquals("3.12", piManager.getText())
     }
 
     @Test
@@ -63,8 +64,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -73,26 +73,26 @@ class PiManagerTest {
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         )
         piManager.next('3', textView.paint, 1000)
-        assert(piManager.getCurrentIndex() == 0)
-        assert(piManager.check('3'))
-        assert(piManager.getText() == "3.")
+        assertEquals(0, piManager.getCurrentIndex())
+        assertTrue(piManager.check('3'))
+        assertEquals("3.", piManager.getText())
         piManager.next('1', textView.paint, 1000)
-        assert(piManager.getCurrentIndex() == 1)
-        assert(piManager.check('1'))
-        assert(piManager.getText() == "3.1")
+        assertEquals(1, piManager.getCurrentIndex())
+        assertTrue(piManager.check('1'))
+        assertEquals("3.1", piManager.getText())
         piManager.next('2', textView.paint, 1000)
-        assert(piManager.getCurrentIndex() == 2)
-        assert(!piManager.check('2'))
-        assert(piManager.getText() == "3.12")
+        assertEquals(2, piManager.getCurrentIndex())
+        assertFalse(piManager.check('2'))
+        assertEquals("3.12", piManager.getText())
         piManager.back()
-        assert(piManager.getCurrentIndex() == 1)
-        assert(piManager.getText() == "3.1")
+        assertEquals(1, piManager.getCurrentIndex())
+        assertEquals("3.1", piManager.getText())
         piManager.back()
-        assert(piManager.getCurrentIndex() == 0)
-        assert(piManager.getText() == "3.")
+        assertEquals(0, piManager.getCurrentIndex())
+        assertEquals("3.", piManager.getText())
         piManager.back()
-        assert(piManager.getCurrentIndex() == -1)
-        assert(piManager.getText() == "")
+        assertEquals(-1, piManager.getCurrentIndex())
+        assertEquals("", piManager.getText())
     }
 
     @Test
@@ -100,8 +100,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -109,13 +108,13 @@ class PiManagerTest {
             View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY),
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         )
-        assert(piManager.getScore() == 1.0f)
+        assertEquals(1.0f, piManager.getScore())
         piManager.next('3', textView.paint, 1000)
         piManager.check('3')
-        assert(piManager.getScore() == 1.0f)
+        assertEquals(1.0f, piManager.getScore())
         piManager.next('1', textView.paint, 1000)
         piManager.check('1')
-        assert(piManager.getScore() == 1.0f)
+        assertEquals(1.0f, piManager.getScore())
     }
 
     @Test
@@ -123,15 +122,14 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
         for (i in 1..100) {
             piManager.next('1', textView.paint, 1000)
             piManager.check('1')
-            assert(piManager.getCurrentIndex() == -1 + i)
+            assertEquals(-1 + i, piManager.getCurrentIndex())
         }
     }
 
@@ -140,8 +138,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -149,13 +146,13 @@ class PiManagerTest {
         for (i in 0 until pi.length) {
             piManager.next(pi[i], textView.paint, 1000)
             piManager.check(pi[i])
-            assert(piManager.getScore() == 1.0f)
+            assertEquals(1.0f, piManager.getScore())
         }
         val notPi = "0000000"
         for (i in 0 until notPi.length) {
             piManager.next(notPi[i], textView.paint, 1000)
             piManager.check(notPi[i])
-            assert(piManager.getScore() == 0.0f)
+            assertEquals(0.0f, piManager.getScore())
         }
     }
 
@@ -164,8 +161,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -176,13 +172,13 @@ class PiManagerTest {
         val pi = "3141"
         piManager.next('3', textView.paint, 1000)
         piManager.check('3')
-        assert(piManager.getText() == "3.")
+        assertEquals("3.", piManager.getText())
         var now = "3."
         for (i in 1 until pi.length) {
             piManager.next(pi[i], textView.paint, 1000)
             piManager.check(pi[i])
             now += pi[i]
-            assert(piManager.getText() == now)
+            assertEquals(now, piManager.getText())
         }
     }
 
@@ -191,8 +187,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -205,13 +200,13 @@ class PiManagerTest {
         val maxCharsNumber = (1000 / charWidth).toInt()
         piManager.next('3', textView.paint, 1000)
         piManager.check('3')
-        assert(piManager.getText() == "3.")
+        assertEquals("3.", piManager.getText())
         var now = "3."
         for (i in 1 until maxCharsNumber - 1) {
             piManager.next(pi[i], textView.paint, 1000)
             piManager.check(pi[i])
             now += pi[i]
-            assert(piManager.getText() == now)
+            assertEquals(now, piManager.getText())
         }
         piManager.next(pi[maxCharsNumber - 1], textView.paint, 1000)
         piManager.check(pi[maxCharsNumber - 1])
@@ -222,7 +217,7 @@ class PiManagerTest {
             piManager.check(pi[maxCharsNumber - 1 + i])
             now = now.slice(1 until now.length)
             now += pi[maxCharsNumber - 1 + i]
-            assert(piManager.getText() == now)
+            assertEquals(now, piManager.getText())
         }
     }
 
@@ -231,8 +226,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -245,16 +239,15 @@ class PiManagerTest {
         val maxCharsNumber = (1000 / charWidth).toInt()
         piManager.next('3', textView.paint, 1000)
         piManager.check('3')
-        assert(piManager.getText() == "3.")
+        assertEquals("3.", piManager.getText())
         var now = "3."
         for (i in 1 until maxCharsNumber - 1) {
             piManager.next(pi[i], textView.paint, 1000)
             piManager.check(pi[i])
             now += pi[i]
-            Log.d("sadassfsasfdsdf", piManager.getColors().toString())
-            assert(piManager.getColors() == List(now.length) { index ->
+            assertEquals(List(now.length) { index ->
                 Color.BLACK
-            })
+            }, piManager.getColors())
         }
         piManager.next(pi[maxCharsNumber - 1], textView.paint, 1000)
         piManager.check(pi[maxCharsNumber - 1])
@@ -265,9 +258,9 @@ class PiManagerTest {
             piManager.check(pi[maxCharsNumber - 1 + i])
             now = now.slice(1 until now.length)
             now += pi[maxCharsNumber - 1 + i]
-            assert(piManager.getColors() == List(now.length) { index ->
+            assertEquals(List(now.length) { index ->
                 Color.BLACK
-            })
+            }, piManager.getColors())
         }
     }
 
@@ -276,8 +269,7 @@ class PiManagerTest {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
@@ -289,51 +281,40 @@ class PiManagerTest {
         val maxCharsNumber = 7
         piManager.next('3', textView.paint, 1000)
         piManager.check('3')
-        assert(piManager.getText() == "3.")
+        assertEquals("3.", piManager.getText())
         var now = "3."
         for (i in 1 until maxCharsNumber - 1) {
-            val x = if (i % 2 == 0)
-                '0'
-            else
-                pi[i]
+            val x = if (i % 2 == 0) '0'
+            else pi[i]
             piManager.next(x, textView.paint, 1000)
             piManager.check(x)
             now += x
-            assert(piManager.getColors() == List(now.length) { index ->
-                if (index < 2)
-                    Color.BLACK
-                else if (index % 2 == 0)
-                    Color.BLACK
-                else
-                    Color.RED
-            })
+            assertEquals(List(now.length) { index ->
+                if (index < 2) Color.BLACK
+                else if (index % 2 == 0) Color.BLACK
+                else Color.RED
+            }, piManager.getColors())
         }
         piManager.next('0', textView.paint, 1000)
         piManager.check('0')
         now = now.slice(1 until now.length)
         now += '0'
         for (i in 1 until 20) {
-            val x = if (i % 2 == 0)
-                '0'
-            else
-                pi[maxCharsNumber - 1 + i]
+            val x = if (i % 2 == 0) '0'
+            else pi[maxCharsNumber - 1 + i]
             piManager.next(x, textView.paint, 1000)
             piManager.check(x)
             now = now.slice(1 until now.length)
             now += x
-            assert(piManager.getColors() == List(now.length) { index ->
+            assertEquals(List(now.length) { index ->
                 if (i % 2 == 0) {
-                    if (index % 2 == 0)
-                        Color.RED
-                    else
-                        Color.BLACK
+                    if (index % 2 == 0) Color.RED
+                    else Color.BLACK
                 } else {
-                    if (index % 2 == 0)
-                        Color.BLACK
-                    else
-                        Color.RED
+                    if (index % 2 == 0) Color.BLACK
+                    else Color.RED
                 }
-            })
+            }, piManager.getColors())
         }
     }
 }

@@ -14,6 +14,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import junit.framework.TestCase.assertTrue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -68,7 +69,7 @@ class StatsTest {
     fun clickBack_openMainActivity() {
         onView(withId(R.id.back_btn)).perform(click())
         scenario.onActivity { activity ->
-            assert(activity.isFinishing) { "Expected activity to finish after click" }
+            assertTrue("Expected activity to finish after click", activity.isFinishing)
         }
     }
 

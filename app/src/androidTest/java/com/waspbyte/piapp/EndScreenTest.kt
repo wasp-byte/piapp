@@ -14,6 +14,8 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -55,7 +57,7 @@ class EndScreenTest {
     fun clickBack_openMainActivity() {
         onView(withId(R.id.back_btn)).perform(click())
         scenario.onActivity { activity ->
-            assert(activity.isFinishing) { "Expected activity to finish after click" }
+            assertTrue("Expected activity to finish after click", activity.isFinishing)
         }
     }
 
@@ -68,13 +70,19 @@ class EndScreenTest {
     @Test
     fun checkScoreRepository() {
         val scoreRepositoryCurrentStreak = scoreRepository.getCurrentStreak()
-        assert(scoreRepositoryCurrentStreak == 1) { "Expected streak 1 get $scoreRepositoryCurrentStreak" }
+        assertEquals(
+            1, scoreRepositoryCurrentStreak
+        )
         val scoreRepositoryCurrentIndex = scoreRepository.getCurrentIndex()
-        assert(scoreRepositoryCurrentIndex == currentIndex) { "Expected currentIndex $currentIndex get $scoreRepositoryCurrentIndex" }
+        assertEquals(
+            currentIndex,
+            scoreRepositoryCurrentIndex
+        )
         val scoreRepositoryCurrentIndexFromHistory = scoreRepository.getHighScores(0).first().second
-        assert(
-            scoreRepositoryCurrentIndexFromHistory == currentIndex.toFloat()
-        ) { "Expected currentIndex $currentIndex get $scoreRepositoryCurrentIndexFromHistory" }
+        assertEquals(
+            currentIndex.toFloat(),
+            scoreRepositoryCurrentIndexFromHistory
+        )
     }
 
     @Test

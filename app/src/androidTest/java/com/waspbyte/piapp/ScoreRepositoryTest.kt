@@ -3,6 +3,7 @@ package com.waspbyte.piapp
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import junit.framework.TestCase.assertEquals
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.daysUntil
@@ -95,7 +96,7 @@ class ScoreRepositoryTest {
             }
             previousDay = day
         }
-        assert(scoreRepository.getBestStreak() == bestStreak)
+        assertEquals(bestStreak, scoreRepository.getBestStreak())
     }
 
     @Test
@@ -105,7 +106,7 @@ class ScoreRepositoryTest {
             if (attempt.accuracy >= 0.9f && attempt.score > currentIndex)
                 currentIndex = attempt.score
         }
-        assert(scoreRepository.getCurrentIndex() == currentIndex)
+        assertEquals(currentIndex, scoreRepository.getCurrentIndex())
     }
 
     fun getHighScores(fromDate: Long): List<Pair<String, Float>> {
@@ -147,28 +148,28 @@ class ScoreRepositoryTest {
     fun getHighScoresAll() {
         val all = 0L
         val highScoresAll = getHighScores(all)
-        assert(scoreRepository.getHighScores(all) == highScoresAll)
+        assertEquals(highScoresAll, scoreRepository.getHighScores(all))
     }
 
     @Test
     fun getHighScoresYear() {
         val year = attempts.last().epoch - 60 * 60 * 24 * 365
         val highScoresYear = getHighScores(year)
-        assert(scoreRepository.getHighScores(year) == highScoresYear)
+        assertEquals(highScoresYear, scoreRepository.getHighScores(year))
     }
 
     @Test
     fun getHighScoresMonth() {
         val month = attempts.last().epoch - 60 * 60 * 24 * 30
         val highScoresMonth = getHighScores(month)
-        assert(scoreRepository.getHighScores(month) == highScoresMonth)
+        assertEquals(highScoresMonth, scoreRepository.getHighScores(month))
     }
 
     @Test
     fun getHighScoresWeek() {
         val week = attempts.last().epoch - 60 * 60 * 24 * 7
         val highScoresWeek = getHighScores(week)
-        assert(scoreRepository.getHighScores(week) == highScoresWeek)
+        assertEquals(highScoresWeek, scoreRepository.getHighScores(week))
     }
 
     @Test
@@ -189,6 +190,6 @@ class ScoreRepositoryTest {
             }
         }
 
-        assert(scoreRepository.getHeatmap() == heatmapData)
+        assertEquals(heatmapData, scoreRepository.getHeatmap())
     }
 }
