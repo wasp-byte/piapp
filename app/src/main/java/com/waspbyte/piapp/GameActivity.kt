@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
@@ -12,11 +13,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.marginEnd
 import androidx.core.view.marginStart
+import androidx.core.view.updatePadding
 
 class GameActivity : AppCompatActivity() {
-    private lateinit var piManager: PiManager
+    internal lateinit var piManager: PiManager
     private lateinit var digitsTv: TextView
 
     private var maxTextWidth: Int = 0
@@ -27,14 +31,22 @@ class GameActivity : AppCompatActivity() {
 
         digitsTv = findViewById(R.id.digits_tv)
 
-        findViewById<Button>(R.id.back_btn).setOnClickListener {
+        val backBtn = findViewById<Button>(R.id.back_btn)
+        ViewCompat.setOnApplyWindowInsetsListener(backBtn) { v, insets ->
+            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            v.updatePadding(top = statusBarHeight)
+            insets
+        }
+        backBtn.setOnClickListener {
             finish()
         }
 
         val width = Resources.getSystem().displayMetrics.widthPixels
         maxTextWidth = width - digitsTv.marginStart - digitsTv.marginEnd
-        piManager = PiManager(this)
+        piManager = createPiManager()
     }
+
+    fun createPiManager() = PiManager(this)
 
     fun addText(view: View) {
         piManager.next((view as Button).text[0], digitsTv.paint, maxTextWidth)
@@ -42,12 +54,12 @@ class GameActivity : AppCompatActivity() {
         formatText()
     }
 
-    fun delete(view: View) {
+    fun delete() {
         piManager.back()
         formatText()
     }
 
-    fun done(view: View) {
+    fun done() {
         val intent = Intent(this, EndScreenActivity::class.java)
         intent.putExtra(getString(R.string.accuracy), piManager.getScore())
         intent.putExtra(getString(R.string.current_index), piManager.getCurrentIndex() + 1)
@@ -55,6 +67,28 @@ class GameActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun buildSpannableText(
+        text: String,
+        colors: List<Int>,
+        errorColor: Int
+    ): SpannableStringBuilder {
+        val builder = SpannableStringBuilder()
+
+        text.forEachIndexed { i, char ->
+            val span = SpannableString(char.toString())
+            if (colors[i] != Color.BLACK) {
+                span.setSpan(
+                    ForegroundColorSpan(errorColor),
+                    0,
+                    1,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            builder.append(span)
+        }
+
+        return builder
+    }
 
     private fun formatText() {
         val typedValue = TypedValue()
@@ -70,14 +104,8 @@ class GameActivity : AppCompatActivity() {
 
         digitsTv.text = ""
 
-        text.forEachIndexed { i, char ->
-            val color = colors[i]
-            val span = SpannableString(char.toString())
-            if (color != Color.BLACK) {
-                span.setSpan(ForegroundColorSpan(typedValue.data), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
-            digitsTv.append(span)
-        }
+        val builder = buildSpannableText(text, colors, typedValue.data)
+        digitsTv.text = builder.toString()
     }
 
     override fun onPause() {

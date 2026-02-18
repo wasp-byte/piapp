@@ -11,6 +11,9 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.db.williamchart.data.Scale
 import com.db.williamchart.view.DonutChartView
 import com.db.williamchart.view.LineChartView
@@ -37,7 +40,14 @@ class StatsActivity : AppCompatActivity() {
         val currentStreak = scoreRepository.getCurrentStreak()
         val bestStreak = scoreRepository.getBestStreak()
 
-        findViewById<Button>(R.id.back_btn).setOnClickListener {
+
+        val backBtn = findViewById<Button>(R.id.back_btn)
+        ViewCompat.setOnApplyWindowInsetsListener(backBtn) { v, insets ->
+            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            v.updatePadding(top = statusBarHeight)
+            insets
+        }
+        backBtn.setOnClickListener {
             finish()
         }
 
