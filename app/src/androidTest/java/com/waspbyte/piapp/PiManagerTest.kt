@@ -134,7 +134,7 @@ class PiManagerTest {
     }
 
     @Test
-    fun test_check() {
+    fun checkCheckCorrect() {
         val textView = TextView(context).apply {
             textSize = 80f
             layoutParams = ViewGroup.LayoutParams(
@@ -147,6 +147,17 @@ class PiManagerTest {
             piManager.next(pi[i], textView.paint, 1000)
             piManager.check(pi[i])
             assertEquals(1.0f, piManager.getScore())
+        }
+    }
+
+    @Test
+    fun checkCheckWrong() {
+        val textView = TextView(context).apply {
+            textSize = 80f
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            typeface = ResourcesCompat.getFont(context, R.font.overpass_mono_regular)
         }
         val notPi = "0000000"
         for (i in 0 until notPi.length) {
