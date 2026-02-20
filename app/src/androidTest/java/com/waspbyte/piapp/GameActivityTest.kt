@@ -1,6 +1,7 @@
 package com.waspbyte.piapp
 
 import android.content.Context
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
@@ -51,7 +52,7 @@ class GameActivityTest {
             val button = Button(activity).apply { text = "3" }
             activity.addText(button)
 
-            activity.delete()
+            activity.delete(button)
 
             val textView = activity.findViewById<TextView>(R.id.digits_tv)
             assertEquals("", textView.text.toString())
@@ -63,7 +64,7 @@ class GameActivityTest {
         Intents.init()
 
         scenario.onActivity { activity ->
-            activity.done()
+            activity.done(View(activity.applicationContext))
         }
 
         intended(hasComponent(EndScreenActivity::class.java.name))

@@ -127,51 +127,34 @@ class MainActivity : AppCompatActivity() {
         private val colorNew: Int,
         private val charsPerLine: Int
     ) : RecyclerView.Adapter<PiAdapter.ViewHolder>() {
-        private var dataSet = Array(text.length / charsPerLine) { i ->
-            val span = SpannableString(text.slice(i * charsPerLine..<(i + 1) * charsPerLine))
-            if (i * charsPerLine <= index) {
-                span.setSpan(
-                    ForegroundColorSpan(colorLearned),
-                    0,
-                    min(index - i * charsPerLine, charsPerLine),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                if (index + 1 <= (i + 1) * charsPerLine) {
-                    span.setSpan(
-                        ForegroundColorSpan(colorNew),
-                        index - i * charsPerLine,
-                        index - i * charsPerLine + 1,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-            }
-            span
+        private lateinit var dataSet: Array<SpannableString>
+
+        init {
+            updateIndex(index)
         }
 
         fun updateIndex(indexNew: Int) {
-            if (indexNew == index) return
             index = indexNew
-            val dataSetIndex = index / charsPerLine
-            for (i in 0..(indexNew / charsPerLine) - dataSetIndex) {
-                val currentIndex = dataSetIndex + i
-                val span = dataSet[currentIndex]
-                // TODO boilerplate
-                span.setSpan(
-                    ForegroundColorSpan(colorLearned), 0, min(
-                        indexNew - currentIndex * charsPerLine,
-                        charsPerLine
-                    ), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                if (indexNew + 1 <= (currentIndex + 1) * charsPerLine) {
-                    span.setSpan(
-                        ForegroundColorSpan(colorNew),
-                        indexNew - currentIndex * charsPerLine,
-                        indexNew - currentIndex * charsPerLine + 1,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+            dataSet = Array(text.length / charsPerLine) { i ->
+                    val span = SpannableString(text.slice(i * charsPerLine..<(i + 1) * charsPerLine))
+                    if (i * charsPerLine <= index) {
+                        span.setSpan(
+                            ForegroundColorSpan(colorLearned),
+                            0,
+                            min(index - i * charsPerLine, charsPerLine),
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        if (index + 1 <= (i + 1) * charsPerLine) {
+                            span.setSpan(
+                                ForegroundColorSpan(colorNew),
+                                index - i * charsPerLine,
+                                index - i * charsPerLine + 1,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                        }
+                    }
+                    span
                 }
-                dataSet[currentIndex] = span
-            }
             notifyDataSetChanged()
         }
 

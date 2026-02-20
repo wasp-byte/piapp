@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.toSpannable
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.marginEnd
@@ -107,7 +108,7 @@ class GameActivity : AppCompatActivity() {
         digitsTv.text = ""
 
         val builder = buildSpannableText(text, colors, typedValue.data)
-        digitsTv.text = builder.toString()
+        digitsTv.text = builder.toSpannable()
     }
 
     override fun onPause() {
