@@ -54,12 +54,14 @@ class GameActivity : AppCompatActivity() {
         formatText()
     }
 
-    fun delete() {
+    // Unused parameter, method is used as a callback for onClick
+    fun delete(view: View) {
         piManager.back()
         formatText()
     }
 
-    fun done() {
+    // Unused parameter, method is used as a callback for onClick
+    fun done(view: View) {
         val intent = Intent(this, EndScreenActivity::class.java)
         intent.putExtra(getString(R.string.accuracy), piManager.getScore())
         intent.putExtra(getString(R.string.current_index), piManager.getCurrentIndex() + 1)
